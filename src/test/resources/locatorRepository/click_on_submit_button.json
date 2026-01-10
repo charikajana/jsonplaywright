@@ -1,0 +1,28 @@
+{
+  "stepFileName": "click_on_submit_button",
+  "gherkinStep": "Click on Submit button",
+  "normalizedStep": "click on submit button",
+  "stepType": "And",
+  "stepNumber": 4,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLICK",
+      "description": "Click Submit button",
+      "element": {
+        "type": "button",
+        "selector": "#submit",
+        "cssSelector": "#submit",
+        "xpath": "//button[@id='submit']",
+        "text": "Submit",
+        "placeholder": null,
+        "dataTest": null
+      }
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-10T15:36:00",
+    "totalActions": 1
+  }
+}

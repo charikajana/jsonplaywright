@@ -1,0 +1,20 @@
+{
+    "stepFileName": "open_the_application____param____",
+    "gherkinStep": "Open the application \"<url>\"",
+    "normalizedStep": "open the application '___param___'",
+    "stepType": "Given",
+    "stepNumber": 1,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "NAVIGATE",
+            "description": "Navigate to URL",
+            "url": "___RUNTIME_PARAMETER___"
+        }
+    ],
+    "metadata": {
+        "createdDate": "2026-01-10T15:36:00",
+        "totalActions": 1
+    }
+}

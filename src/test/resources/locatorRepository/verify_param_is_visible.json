@@ -1,0 +1,35 @@
+{
+    "stepFileName": "verify____param_____is_visible",
+    "gherkinStep": "Verify \"<text>\" is visible",
+    "normalizedStep": "verify '___param___' is visible",
+    "stepType": "Then",
+    "stepNumber": 5,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "VERIFY_TEXT",
+            "description": "Verify text is visible on page",
+            "element": {
+                "type": "text",
+                "selector": "body",
+                "cssSelector": "body",
+                "xpath": "//body",
+                "text": null,
+                "placeholder": null,
+                "dataTest": null
+            },
+            "expectedText": "___RUNTIME_PARAMETER___"
+        },
+        {
+            "actionNumber": 2,
+            "actionType": "SCREENSHOT",
+            "description": "Capture screenshot after successful verification",
+            "element": null
+        }
+    ],
+    "metadata": {
+        "createdDate": "2026-01-10T15:36:00",
+        "totalActions": 1
+    }
+}
