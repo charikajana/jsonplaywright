@@ -35,6 +35,7 @@
         <parallel.enabled>false</parallel.enabled>
         <ThreadCount>1</ThreadCount>
         <parallel.mode>none</parallel.mode>
+        <Tags>@sanity</Tags>
     </properties>
 
     <dependencyManagement>
@@ -181,6 +182,7 @@
                         <parallel.enabled>${parallel.enabled}</parallel.enabled>
                         <ThreadCount>${ThreadCount}</ThreadCount>
                         <parallel.mode>${parallel.mode}</parallel.mode>
+                        <cucumber.filter.tags>${Tags}</cucumber.filter.tags>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
