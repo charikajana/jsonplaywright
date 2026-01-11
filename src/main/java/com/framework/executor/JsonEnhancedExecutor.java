@@ -32,7 +32,13 @@ public class JsonEnhancedExecutor {
         StepData stepData = StepRepository.getStep(gherkinStep);
         
         if (stepData == null) {
-            logger.warn("[WARNING] No JSON data found for step: {}", gherkinStep);
+            logger.info("[INFO] No JSON data found for step: {}. Searching for traditional step definition...", gherkinStep);
+            boolean traditionalSuccess = com.framework.utils.StepDiscoveryRegistry.getInstance().executeMatchingStep(gherkinStep);
+            if (traditionalSuccess) {
+                logger.info("[SUCCESS] Executed step using traditional step definition");
+                return true;
+            }
+            logger.warn("[WARNING] No JSON or traditional step definition found for: {}", gherkinStep);
             return false;
         }
         

@@ -33,8 +33,9 @@
         
         <!-- Parallel Execution Configuration -->
         <parallel.enabled>false</parallel.enabled>
-        <parallel.threads>4</parallel.threads>
-        <parallel.mode>methods</parallel.mode>
+        <ThreadCount>1</ThreadCount>
+        <parallel.mode>none</parallel.mode>
+        <Tags>@sanity</Tags>
     </properties>
 
     <dependencyManagement>
@@ -161,9 +162,16 @@
                 <configuration>
                     <!-- Parallel Execution Configuration -->
                     <parallel>${parallel.mode}</parallel>
-                    <threadCount>${parallel.threads}</threadCount>
+                    <threadCount>${ThreadCount}</threadCount>
+                    <properties>
+                        <property>
+                            <name>dataproviderthreadcount</name>
+                            <value>${ThreadCount}</value>
+                        </property>
+                    </properties>
                     <perCoreThreadCount>false</perCoreThreadCount>
                     <useUnlimitedThreads>false</useUnlimitedThreads>
+                    <testFailureIgnore>true</testFailureIgnore>
                     
                     <!-- Test Isolation -->
                     <reuseForks>false</reuseForks>
@@ -172,8 +180,9 @@
                     <!-- System Properties -->
                     <systemPropertyVariables>
                         <parallel.enabled>${parallel.enabled}</parallel.enabled>
-                        <parallel.threads>${parallel.threads}</parallel.threads>
+                        <ThreadCount>${ThreadCount}</ThreadCount>
                         <parallel.mode>${parallel.mode}</parallel.mode>
+                        <cucumber.filter.tags>${Tags}</cucumber.filter.tags>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -182,8 +191,18 @@
                 <artifactId>allure-maven</artifactId>
                 <version>${allure.maven}</version>
                 <configuration>
-                    <reportVersion>${allure.maven}</reportVersion>
+                    <reportVersion>${allure.version}</reportVersion>
+                    <resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>allure-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

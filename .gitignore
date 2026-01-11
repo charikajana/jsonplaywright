@@ -34,6 +34,10 @@ build/
 
 ### VS Code ###
 .vscode/
+reports/
+allure-results/
+allure-report/
+logs/
 
 ### Mac OS ###
 .DS_Store

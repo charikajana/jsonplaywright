@@ -1,4 +1,4 @@
-@login
+@login @sanity
 Feature: User Login Flow
 
   @issue=Bug_001 @tmsLink=TCM_20 @rally=RallyID_20
