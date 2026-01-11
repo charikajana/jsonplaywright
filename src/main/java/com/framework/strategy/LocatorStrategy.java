@@ -92,6 +92,23 @@ public class LocatorStrategy {
     private static List<LocatorAttempt> buildLocatorAttempts(ElementLocators locators) {
         List<LocatorAttempt> attempts = new ArrayList<>();
         
+        // Priority 0: PROXIMITY ANCHOR (The "E-commerce Card" Hero)
+        // If we have nearbyText (e.g. Product Name) and a selector/id, 
+        // try finding the element near that text first.
+        if (locators.getFingerprint() != null && locators.getFingerprint().getContext() != null) {
+            String anchorText = locators.getFingerprint().getContext().getNearbyText();
+            if (anchorText != null && !anchorText.isEmpty()) {
+                String baseSelector = null;
+                if (locators.getId() != null) baseSelector = "#" + locators.getId();
+                else if (locators.getSelector() != null) baseSelector = locators.getSelector();
+                
+                if (baseSelector != null && !baseSelector.contains(":near")) {
+                    // Playwright's near() selector: Finds baseSelector closest to anchorText
+                    attempts.add(new LocatorAttempt("proximity", baseSelector + ":near(:text(\"" + anchorText + "\"))"));
+                }
+            }
+        }
+
         // Priority 1: ID
         if (locators.getId() != null && !locators.getId().isEmpty()) {
             attempts.add(new LocatorAttempt("id", "#" + locators.getId()));
