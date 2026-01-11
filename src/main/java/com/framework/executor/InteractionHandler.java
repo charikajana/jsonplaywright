@@ -4,6 +4,7 @@ import com.framework.data.ActionData;
 import com.framework.data.ElementLocators;
 import com.framework.reporting.ErrorReporter;
 import com.framework.strategy.LocatorStrategy;
+import com.framework.healing.SmartLocatorFinder;
 import com.framework.strategy.SmartWaitStrategy;
 import com.framework.utils.ParameterExtractor;
 import com.microsoft.playwright.Locator;
@@ -25,7 +26,7 @@ public class InteractionHandler {
         }
         
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) {
                 ErrorReporter.reportLocatorError("Click action", 
                     locators.getBestLocator(), null, "Element not found with any locator");
@@ -59,7 +60,7 @@ public class InteractionHandler {
         if (value == null) value = action.getValue();
         
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) {
                 ErrorReporter.reportLocatorError(originalGherkinStep, 
                     locators.getBestLocator(), value, "Element not found with any locator");
@@ -85,7 +86,7 @@ public class InteractionHandler {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
             if (!SmartWaitStrategy.smartWait(element, "CLICK")) {
                 logger.warn("[WARN] Element not ready for double click");
@@ -103,7 +104,7 @@ public class InteractionHandler {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
             element.click(new Locator.ClickOptions().setButton(com.microsoft.playwright.options.MouseButton.RIGHT));
             logger.debug("[OK] Right-clicked: {}", locators.getBestLocator());
@@ -118,7 +119,7 @@ public class InteractionHandler {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
             element.clear();
             logger.debug("[OK] Cleared field: {}", locators.getBestLocator());
@@ -135,7 +136,7 @@ public class InteractionHandler {
         String val = ParameterExtractor.extractFirstParameter(originalGherkinStep);
         if (val == null) val = action.getValue();
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
             element.selectOption(val);
             logger.debug("[OK] Selected '{}' from: {}", val, locators.getBestLocator());
@@ -150,7 +151,7 @@ public class InteractionHandler {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
             element.hover();
             logger.debug("[OK] Hovered over: {}", locators.getBestLocator());
@@ -165,7 +166,7 @@ public class InteractionHandler {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
             element.check();
             logger.debug("[OK] Checked: {}", locators.getBestLocator());
@@ -180,7 +181,7 @@ public class InteractionHandler {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
         try {
-            Locator element = LocatorStrategy.findElementWithFallback(page, locators);
+            Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
             element.uncheck();
             logger.debug("[OK] Unchecked: {}", locators.getBestLocator());
@@ -209,8 +210,8 @@ public class InteractionHandler {
         ElementLocators target = action.getTargetElement();
         if (source == null || target == null) return false;
         try {
-            Locator sourceEl = LocatorStrategy.findElementWithFallback(page, source);
-            Locator targetEl = LocatorStrategy.findElementWithFallback(page, target);
+            Locator sourceEl = SmartLocatorFinder.findElement(page, source);
+            Locator targetEl = SmartLocatorFinder.findElement(page, target);
             if (sourceEl == null || targetEl == null) return false;
             sourceEl.dragTo(targetEl);
             logger.debug("[OK] Dragged from {} to {}", source.getBestLocator(), target.getBestLocator());

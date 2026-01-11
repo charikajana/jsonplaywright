@@ -54,7 +54,7 @@ public class ErrorReporter {
         logger.error("\n{}", report);
         
         // Attach to Allure report
-        Allure.addAttachment("🔴 Step Failure Details", "text/plain", report.toString(), ".txt");
+        Allure.addAttachment("Step Failure Details", "text/plain", report.toString(), ".txt");
     }
     
     /**
@@ -81,15 +81,15 @@ public class ErrorReporter {
             report.append("💾 Value Used: ").append(value).append("\n");
         }
         
-        report.append("❌ Error: ").append(errorMessage).append("\n\n");
-        report.append("💡 Troubleshooting Tips:\n");
-        report.append("   • Verify the element exists on the page\n");
-        report.append("   • Check if the locator selector is correct\n");
-        report.append("   • Ensure the element is visible and enabled\n");
-        report.append("   • Consider adding an explicit wait\n");
+        report.append("Error: ").append(errorMessage).append("\n\n");
+        report.append("Troubleshooting Tips:\n");
+        report.append("   - Verify the element exists on the page\n");
+        report.append("   - Check if the locator selector is correct\n");
+        report.append("   - Ensure the element is visible and enabled\n");
+        report.append("   - Consider adding an explicit wait\n");
         
         logger.error("\n{}", report);
-        Allure.addAttachment("🎯 Locator Failure Details", "text/plain", report.toString(), ".txt");
+        Allure.addAttachment("Locator Failure Details", "text/plain", report.toString(), ".txt");
     }
     
     /**
@@ -116,28 +116,28 @@ public class ErrorReporter {
         }
         
         report.append("\n");
-        report.append("✅ Expected: ").append(expected).append("\n");
-        report.append("❌ Actual:   ").append(actual).append("\n\n");
+        report.append("Expected: ").append(expected).append("\n");
+        report.append("Actual:   ").append(actual).append("\n\n");
         
         // Calculate similarity for helpful debugging
         if (expected != null && actual != null) {
             boolean containsExpected = actual.contains(expected);
             boolean caseInsensitiveMatch = actual.equalsIgnoreCase(expected);
             
-            report.append("🔍 Analysis:\n");
+            report.append("Analysis:\n");
             if (containsExpected) {
-                report.append("   ✓ Actual text CONTAINS expected text\n");
+                report.append("   [PASSED] Actual text CONTAINS expected text\n");
             } else {
-                report.append("   ✗ Actual text DOES NOT contain expected text\n");
+                report.append("   [FAILED] Actual text DOES NOT contain expected text\n");
             }
             
             if (caseInsensitiveMatch) {
-                report.append("   ⚠ Case-insensitive match found (check case sensitivity)\n");
+                report.append("   [WARNING] Case-insensitive match found (check case sensitivity)\n");
             }
         }
         
         logger.error("\n{}", report);
-        Allure.addAttachment("🔍 Verification Failure", "text/plain", report.toString(), ".txt");
+        Allure.addAttachment("Verification Failure", "text/plain", report.toString(), ".txt");
     }
     
     /**
@@ -158,15 +158,15 @@ public class ErrorReporter {
         report.append("╚════════════════════════════════════════════════════════╝\n\n");
         report.append("📅 Timestamp: ").append(timestamp).append("\n");
         report.append("📍 Gherkin Step: ").append(stepText).append("\n");
-        report.append("❌ Error: ").append(errorMessage).append("\n\n");
-        report.append("📊 Extracted Parameters: ").append(extractedParams.size()).append("\n");
+        report.append("Error: ").append(errorMessage).append("\n\n");
+        report.append("Extracted Parameters: ").append(extractedParams.size()).append("\n");
         
         for (int i = 0; i < extractedParams.size(); i++) {
             report.append("   [").append(i).append("]: \"").append(extractedParams.get(i)).append("\"\n");
         }
         
         logger.error("\n{}", report);
-        Allure.addAttachment("📊 Parameter Error", "text/plain", report.toString(), ".txt");
+        Allure.addAttachment("Parameter Error", "text/plain", report.toString(), ".txt");
     }
     
     /**
@@ -180,16 +180,16 @@ public class ErrorReporter {
         report.append("╔════════════════════════════════════════════════════════╗\n");
         report.append("║          SCENARIO FAILURE SUMMARY                      ║\n");
         report.append("╚════════════════════════════════════════════════════════╝\n\n");
-        report.append("🎬 Scenario: ").append(scenario.getName()).append("\n");
-        report.append("📄 Feature: ").append(scenario.getUri()).append("\n");
-        report.append("🏷️  Tags: ").append(scenario.getSourceTagNames()).append("\n");
-        report.append("❌ Status: FAILED\n\n");
+        report.append("Scenario: ").append(scenario.getName()).append("\n");
+        report.append("Feature: ").append(scenario.getUri()).append("\n");
+        report.append("Tags: ").append(scenario.getSourceTagNames()).append("\n");
+        report.append("Status: FAILED\n\n");
         
-        report.append("📋 Error Details:\n");
+        report.append("Error Details:\n");
         errorDetails.forEach((key, value) -> 
-            report.append("   • ").append(key).append(": ").append(value).append("\n"));
+            report.append("   - ").append(key).append(": ").append(value).append("\n"));
         
         logger.error("\n{}", report);
-        Allure.addAttachment("📊 Scenario Summary", "text/plain", report.toString(), ".txt");
+        Allure.addAttachment("Scenario Summary", "text/plain", report.toString(), ".txt");
     }
 }

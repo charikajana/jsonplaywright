@@ -45,21 +45,21 @@ public class LocatorStrategy {
                 
                 // Check if element exists
                 if (locator.count() > 0) {
-                    logger.debug("[LOCATOR] ✓ Found element using: {} -> {}", 
+                    logger.debug("[LOCATOR] OK: Found element using: {} -> {}", 
                         attempt.strategy, attempt.selector);
                     return locator;
                 }
                 
-                logger.debug("[LOCATOR] ✗ Not found using {}: {}", 
+                logger.debug("[LOCATOR] FAIL: Not found using {}: {}", 
                     attempt.strategy, attempt.selector);
                 
             } catch (Exception e) {
-                logger.debug("[LOCATOR] ✗ Error with {}: {}", 
+                logger.debug("[LOCATOR] FAIL: Error with {}: {}", 
                     attempt.strategy, e.getMessage());
             }
         }
         
-        logger.error("[LOCATOR] ❌ FAILED - Element not found after {} attempts", attempts.size());
+        logger.error("[LOCATOR] FAILED - Element not found after {} attempts", attempts.size());
         return null;
     }
     
@@ -92,68 +92,85 @@ public class LocatorStrategy {
     private static List<LocatorAttempt> buildLocatorAttempts(ElementLocators locators) {
         List<LocatorAttempt> attempts = new ArrayList<>();
         
-        // Priority 1: ID (usually unique and stable)
+        // Priority 1: ID
         if (locators.getId() != null && !locators.getId().isEmpty()) {
-            attempts.add(new LocatorAttempt(
-                "id", 
-                "#" + locators.getId()
-            ));
+            attempts.add(new LocatorAttempt("id", "#" + locators.getId()));
         }
         
-        // Priority 2: Name (stable for form elements)
-        if (locators.getName() != null && !locators.getName().isEmpty()) {
-            attempts.add(new LocatorAttempt(
-                "name", 
-                "[name='" + locators.getName() + "']"
-            ));
-        }
-        
-        // Priority 3: CSS Selector
-        if (locators.getCssSelector() != null && !locators.getCssSelector().isEmpty()) {
-            attempts.add(new LocatorAttempt(
-                "css", 
-                locators.getCssSelector()
-            ));
-        }
-        
-        // Priority 4: Generic selector from JSON
-        if (locators.getSelector() != null && !locators.getSelector().isEmpty()) {
-            attempts.add(new LocatorAttempt(
-                "selector", 
-                locators.getSelector()
-            ));
-        }
-        
-        // Priority 5: XPath
-        if (locators.getXpath() != null && !locators.getXpath().isEmpty()) {
-            attempts.add(new LocatorAttempt(
-                "xpath", 
-                locators.getXpath()
-            ));
-        }
-        
-        // Priority 6: Text content
-        if (locators.getText() != null && !locators.getText().isEmpty()) {
-            attempts.add(new LocatorAttempt(
-                "text", 
-                "text=" + locators.getText()
-            ));
-        }
-        
-        // Priority 7: Placeholder (for input fields)
-        if (locators.getPlaceholder() != null && !locators.getPlaceholder().isEmpty()) {
-            attempts.add(new LocatorAttempt(
-                "placeholder", 
-                "[placeholder='" + locators.getPlaceholder() + "']"
-            ));
-        }
-        
-        // Priority 8: data-testid (last in priority)
+        // Priority 2: Data Test (Automation best practice)
         if (locators.getDataTest() != null && !locators.getDataTest().isEmpty()) {
-            attempts.add(new LocatorAttempt(
-                "data-testid", 
-                "[data-testid='" + locators.getDataTest() + "']"
-            ));
+            attempts.add(new LocatorAttempt("data-test", "[data-test='" + locators.getDataTest() + "']"));
+        }
+
+        // Priority 3: Name (stable for form elements)
+        if (locators.getName() != null && !locators.getName().isEmpty()) {
+            attempts.add(new LocatorAttempt("name", "[name='" + locators.getName() + "']"));
+        }
+
+        // Priority 4: ARIA Label (Accessibility)
+        if (locators.getAriaLabel() != null && !locators.getAriaLabel().isEmpty()) {
+            attempts.add(new LocatorAttempt("aria-label", "aria-label=\"" + locators.getAriaLabel() + "\""));
+        }
+
+        // Priority 5: Role (Semantic anchor)
+        if (locators.getRole() != null && !locators.getRole().isEmpty()) {
+            attempts.add(new LocatorAttempt("role", "[role='" + locators.getRole() + "']"));
+        }
+        
+        // Priority 6: CSS Selector
+        if (locators.getCssSelector() != null && !locators.getCssSelector().isEmpty()) {
+            attempts.add(new LocatorAttempt("css", locators.getCssSelector()));
+        }
+        
+        // Priority 7: Generic selector 
+        if (locators.getSelector() != null && !locators.getSelector().isEmpty()) {
+            attempts.add(new LocatorAttempt("selector", locators.getSelector()));
+        }
+        
+        // Priority 8: XPath
+        if (locators.getXpath() != null && !locators.getXpath().isEmpty()) {
+            attempts.add(new LocatorAttempt("xpath", locators.getXpath()));
+        }
+
+        // Priority 9: href (for links)
+        if (locators.getHref() != null && !locators.getHref().isEmpty()) {
+            attempts.add(new LocatorAttempt("href", "[href='" + locators.getHref() + "']"));
+        }
+
+        // Priority 10: src (for images/media)
+        if (locators.getSrc() != null && !locators.getSrc().isEmpty()) {
+            attempts.add(new LocatorAttempt("src", "[src='" + locators.getSrc() + "']"));
+        }
+        
+        // Priority 11: Text content
+        if (locators.getText() != null && !locators.getText().isEmpty()) {
+            attempts.add(new LocatorAttempt("text", "text=" + locators.getText()));
+        }
+
+        // Priority 12: Value (for inputs/buttons)
+        if (locators.getValue() != null && !locators.getValue().isEmpty()) {
+            attempts.add(new LocatorAttempt("value", "[value='" + locators.getValue() + "']"));
+        }
+        
+        // Priority 13: Title
+        if (locators.getTitle() != null && !locators.getTitle().isEmpty()) {
+            attempts.add(new LocatorAttempt("title", "[title='" + locators.getTitle() + "']"));
+        }
+
+        // Priority 14: Alt (for images)
+        if (locators.getAlt() != null && !locators.getAlt().isEmpty()) {
+            attempts.add(new LocatorAttempt("alt", "[alt='" + locators.getAlt() + "']"));
+        }
+
+        // Priority 15: Placeholder (for inputs)
+        if (locators.getPlaceholder() != null && !locators.getPlaceholder().isEmpty()) {
+            attempts.add(new LocatorAttempt("placeholder", "[placeholder='" + locators.getPlaceholder() + "']"));
+        }
+
+        // Priority 16: Class Name (Least stable, try last)
+        if (locators.getClassName() != null && !locators.getClassName().isEmpty()) {
+            String classSelector = "." + locators.getClassName().trim().replaceAll("\\s+", ".");
+            attempts.add(new LocatorAttempt("class", classSelector));
         }
         
         return attempts;

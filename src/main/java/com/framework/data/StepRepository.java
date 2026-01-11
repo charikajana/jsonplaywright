@@ -3,6 +3,9 @@ package com.framework.data;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.framework.data.StepData;
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -289,76 +292,98 @@ public class StepRepository {
      * Parse action data from JSON node
      */
     private static ActionData parseActionData(JsonNode actionNode) {
-        ActionData action = new ActionData();
-        action.setActionNumber(actionNode.get("actionNumber").asInt());
-        action.setActionType(actionNode.get("actionType").asText());
-        action.setDescription(actionNode.get("description").asText());
-        
-        if (actionNode.has("element")) {
-            JsonNode elementNode = actionNode.get("element");
-            ElementLocators locators = parseElementLocators(elementNode);
-            action.setElement(locators);
+        try {
+            return objectMapper.treeToValue(actionNode, ActionData.class);
+        } catch (IOException e) {
+            logger.error("Error deserializing ActionData: {}", e.getMessage());
+            // Fallback to minimal manual parsing if treeToValue fails
+            ActionData action = new ActionData();
+            action.setActionType(actionNode.get("actionType").asText());
+            action.setDescription(actionNode.get("description").asText());
+            return action;
         }
-        
-        if (actionNode.has("value")) {
-            action.setValue(actionNode.get("value").asText());
-        }
-        
-        if (actionNode.has("url")) {
-            action.setUrl(actionNode.get("url").asText());
-        }
-        
-        if (actionNode.has("expectedText")) {
-            action.setExpectedText(actionNode.get("expectedText").asText());
-        }
-        
-        if (actionNode.has("expectedCount")) {
-            action.setExpectedCount(actionNode.get("expectedCount").asInt());
-        }
-        
-        return action;
-
     }
     
     /**
      * Parse element locators from JSON node
      */
     private static ElementLocators parseElementLocators(JsonNode elementNode) {
-        ElementLocators locators = new ElementLocators();
-        
-        if (elementNode.has("type")) {
-            locators.setType(elementNode.get("type").asText());
+        try {
+            return objectMapper.treeToValue(elementNode, ElementLocators.class);
+        } catch (IOException e) {
+            logger.error("Error deserializing ElementLocators: {}", e.getMessage());
+            return new ElementLocators();
         }
-        if (elementNode.has("id")) {
-            locators.setId(elementNode.get("id").asText());
+    }
+
+    /**
+     * Populates live attributes from a Playwright locator into the locators model.
+     * This makes the JSON "strong" by capturing every possible identity signal.
+     */
+    public static void populateLiveAttributes(Locator element, ElementLocators locators) {
+        if (element == null || locators == null) return;
+        try {
+            // Use JavaScript to get both explicit attributes and computed properties
+            // Includes a relative XPath generator to ensure the "xpath" field is not null
+            String jsonAttributes = (String) element.evaluate("el => {" +
+                "  const getXPath = (element) => {" +
+                "    if (element.id) return `//${element.tagName.toLowerCase()}[@id='${element.id}']`;" +
+                "    if (element.name) return `//${element.tagName.toLowerCase()}[@name='${element.name}']`;" +
+                "    const paths = [];" +
+                "    for (; element && element.nodeType === 1; element = element.parentNode) {" +
+                "      let index = 0;" +
+                "      for (let sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {" +
+                "        if (sibling.nodeType === 1 && sibling.nodeName === element.nodeName) index++;" +
+                "      }" +
+                "      const tagName = element.nodeName.toLowerCase();" +
+                "      const pathIndex = (index ? `[${index + 1}]` : '');" +
+                "      paths.unshift(tagName + pathIndex);" +
+                "      if (element.id) break;" +
+                "    }" +
+                "    let xpath = paths.join('/');" +
+                "    return xpath.startsWith('html') ? '/' + xpath : '//' + xpath;" +
+                "  };" +
+                "  " +
+                "  return JSON.stringify({" +
+                "    id: el.id || el.getAttribute('id') || null," +
+                "    name: el.name || el.getAttribute('name') || null," +
+                "    type: el.type || el.getAttribute('type') || null," +
+                "    placeholder: el.placeholder || el.getAttribute('placeholder') || null," +
+                "    title: el.title || el.getAttribute('title') || null," +
+                "    alt: el.alt || el.getAttribute('alt') || null," +
+                "    className: el.className || el.getAttribute('class') || null," +
+                "    href: el.href || el.getAttribute('href') || null," +
+                "    src: el.src || el.getAttribute('src') || null," +
+                "    value: el.value || el.getAttribute('value') || null," +
+                "    ariaLabel: el.getAttribute('aria-label') || null," +
+                "    role: el.getAttribute('role') || null," +
+                "    xpath: getXPath(el)" +
+                "  });" +
+                "}");
+            
+            JsonNode attrNode = objectMapper.readTree(jsonAttributes);
+            
+            // Revert empty strings to NULL if they are missing on page
+            locators.setId(attrNode.path("id").isMissingNode() || attrNode.path("id").isNull() ? null : attrNode.path("id").asText());
+            locators.setName(attrNode.path("name").isMissingNode() || attrNode.path("name").isNull() ? null : attrNode.path("name").asText());
+            locators.setType(attrNode.path("type").asText(locators.getType()));
+            locators.setRole(attrNode.path("role").isMissingNode() || attrNode.path("role").isNull() ? null : attrNode.path("role").asText());
+            locators.setAriaLabel(attrNode.path("ariaLabel").isMissingNode() || attrNode.path("ariaLabel").isNull() ? null : attrNode.path("ariaLabel").asText());
+            locators.setPlaceholder(attrNode.path("placeholder").isMissingNode() || attrNode.path("placeholder").isNull() ? null : attrNode.path("placeholder").asText());
+            locators.setTitle(attrNode.path("title").isMissingNode() || attrNode.path("title").isNull() ? null : attrNode.path("title").asText());
+            locators.setAlt(attrNode.path("alt").isMissingNode() || attrNode.path("alt").isNull() ? null : attrNode.path("alt").asText());
+            locators.setClassName(attrNode.path("className").isMissingNode() || attrNode.path("className").isNull() ? null : attrNode.path("className").asText());
+            locators.setValue(attrNode.path("value").isMissingNode() || attrNode.path("value").isNull() ? null : attrNode.path("value").asText());
+            locators.setHref(attrNode.path("href").isMissingNode() || attrNode.path("href").isNull() ? null : attrNode.path("href").asText());
+            locators.setSrc(attrNode.path("src").isMissingNode() || attrNode.path("src").isNull() ? null : attrNode.path("src").asText());
+            locators.setXpath(attrNode.path("xpath").isMissingNode() || attrNode.path("xpath").isNull() ? null : attrNode.path("xpath").asText());
+            
+            // Refresh text
+            String liveText = element.innerText();
+            locators.setText(liveText != null && !liveText.trim().isEmpty() ? liveText.trim() : null);
+            
+        } catch (Exception e) {
+            logger.debug("[INFO] Could not fetch all live attributes: {}", e.getMessage());
         }
-        if (elementNode.has("name")) {
-            locators.setName(elementNode.get("name").asText());
-        }
-        if (elementNode.has("selector")) {
-            locators.setSelector(elementNode.get("selector").asText());
-        }
-        if (elementNode.has("cssSelector")) {
-            locators.setCssSelector(elementNode.get("cssSelector").asText());
-        }
-        if (elementNode.has("xpath")) {
-            locators.setXpath(elementNode.get("xpath").asText());
-        }
-        if (elementNode.has("text")) {
-            locators.setText(elementNode.get("text").asText());
-        }
-        if (elementNode.has("placeholder")) {
-            locators.setPlaceholder(elementNode.get("placeholder").asText());
-        }
-        if (elementNode.has("dataTest")) {
-            locators.setDataTest(elementNode.get("dataTest").asText());
-        }
-        if (elementNode.has("coordinates")) {
-            JsonNode coordsNode = elementNode.get("coordinates");
-            locators.setX(coordsNode.get("x").asInt());
-            locators.setY(coordsNode.get("y").asInt());
-        }
-        
-        return locators;
     }
 }
