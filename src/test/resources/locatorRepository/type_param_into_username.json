@@ -1,29 +1,53 @@
 {
-    "stepFileName": "type____param_____into_username",
-    "gherkinStep": "Type \"<username>\" into username",
-    "normalizedStep": "type '___param___' into username",
-    "stepType": "When",
-    "stepNumber": 2,
-    "status": "passed",
-    "actions": [
-        {
-            "actionNumber": 1,
-            "actionType": "TYPE",
-            "description": "Type into username field",
-            "element": {
-                "type": "input",
-                "selector": "#username",
-                "cssSelector": "#username",
-                "xpath": "//input[@id='username']",
-                "name": "username",
-                "placeholder": null,
-                "dataTest": null
-            },
-            "value": "___RUNTIME_PARAMETER___"
+  "stepFileName" : "type_param_into_username",
+  "gherkinStep" : "Type \"<username>\" into username",
+  "normalizedStep" : "type ___param___ into username",
+  "stepType" : "When",
+  "stepNumber" : 2,
+  "status" : "passed",
+  "actions" : [ {
+    "actionNumber" : 1,
+    "actionType" : "TYPE",
+    "description" : "Type into username field",
+    "element" : {
+      "type" : "text",
+      "id" : "username",
+      "name" : "username",
+      "selector" : "#username",
+      "cssSelector" : "#username",
+      "xpath" : "//input[@id='username']",
+      "text" : null,
+      "placeholder" : null,
+      "dataTest" : null,
+      "ariaLabel" : null,
+      "role" : null,
+      "title" : null,
+      "alt" : null,
+      "className" : null,
+      "value" : null,
+      "href" : null,
+      "src" : null,
+      "coordinates" : null,
+      "fingerprint" : {
+        "attributes" : {
+          "type" : "text",
+          "ariaLabel" : null,
+          "classList" : "",
+          "role" : "textbox"
+        },
+        "context" : {
+          "parentTag" : "div",
+          "parentClass" : null,
+          "nearbyText" : "Username",
+          "heading" : "Test login"
         }
-    ],
-    "metadata": {
-        "createdDate": "2026-01-10T15:34:00",
-        "totalActions": 1
-    }
+      },
+      "healed" : false
+    },
+    "value" : "___RUNTIME_PARAMETER___"
+  } ],
+  "metadata" : {
+    "createdDate" : "2026-01-11T10:51:07.030154400",
+    "totalActions" : 1
+  }
 }

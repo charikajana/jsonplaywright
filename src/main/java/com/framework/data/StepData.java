@@ -1,10 +1,15 @@
 package com.framework.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 /**
  * Step Data Model - represents a single step with its actions
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StepData {
     private int stepNumber;
     private String gherkinStep;

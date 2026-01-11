@@ -1,8 +1,13 @@
 package com.framework.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * Action Data Model - represents a single action within a step
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ActionData {
     private int actionNumber;
     private String actionType;

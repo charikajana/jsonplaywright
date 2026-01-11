@@ -54,6 +54,20 @@ public class JsonEnhancedExecutor {
                     return false;
                 }
             }
+            
+            // AFTER SUCCESSFUL EXECUTION: Check if any element was healed
+            boolean anyHealed = false;
+            for (ActionData action : actions) {
+                if (action.getElement() != null && action.getElement().isHealed()) {
+                    anyHealed = true;
+                    break;
+                }
+            }
+            
+            if (anyHealed) {
+                logger.info("[HEALING] Persistence: Found healed elements in step. Saving fix to JSON repository...");
+                StepRepository.saveOrUpdateStep(stepData);
+            }
         }
         
         logger.info("[SUCCESS] Step completed successfully");
