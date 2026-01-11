@@ -13,6 +13,9 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
+import java.io.File;
+import java.nio.file.StandardCopyOption;
+import java.util.stream.Stream;
 
 public class TestRunnerUtils {
     private static final Logger logger = LoggerFactory.getLogger(TestRunnerUtils.class);
@@ -57,6 +60,9 @@ public class TestRunnerUtils {
     }
 
     public static void generateAndOpenAllureReport(String resultsPath, String reportPath) {
+        // Copy results from default folder to dynamic folder if they exist
+        copyAllureResults(resultsPath);
+        
         logger.info("Generating Allure Report...");
         try {
             String os = System.getProperty("os.name").toLowerCase();
@@ -145,5 +151,29 @@ public class TestRunnerUtils {
         
         logger.info("[PARALLEL] No thread count specified, using default: 1");
         return 1;
+    }
+
+    private static void copyAllureResults(String targetResultsPath) {
+        String sourcePath = "allure-results";
+        if (new File(sourcePath).exists()) {
+            try {
+                java.nio.file.Path source = Paths.get(sourcePath);
+                java.nio.file.Path target = Paths.get(targetResultsPath);
+                Files.createDirectories(target);
+                
+                try (Stream<java.nio.file.Path> stream = Files.list(source)) {
+                    stream.forEach(file -> {
+                        try {
+                            Files.copy(file, target.resolve(file.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+                        } catch (IOException e) {
+                            logger.warn("[WARNING] Could not copy file {}: {}", file, e.getMessage());
+                        }
+                    });
+                }
+                logger.info("[SUCCESS] Copied results from {} to {}", sourcePath, targetResultsPath);
+            } catch (IOException e) {
+                logger.error("[ERROR] Failed to copy allure results: {}", e.getMessage());
+            }
+        }
     }
 }
