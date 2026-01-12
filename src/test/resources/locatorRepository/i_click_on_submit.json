@@ -1,0 +1,46 @@
+{
+  "stepFileName" : "i_click_on_submit",
+  "gherkinStep" : "When I click on Submit",
+  "normalizedStep" : "i click on submit",
+  "stepType" : null,
+  "stepNumber" : 5,
+  "status" : null,
+  "actions" : [ {
+    "actionNumber" : 1,
+    "actionType" : "CLICK",
+    "element" : {
+      "type" : "button",
+      "id" : "submit",
+      "name" : null,
+      "selector" : "#submit",
+      "cssSelector" : "#submit",
+      "xpath" : "//*[@id=\"submit\"]",
+      "text" : "Submit",
+      "placeholder" : null,
+      "dataTest" : null,
+      "ariaLabel" : null,
+      "role" : null,
+      "title" : null,
+      "alt" : null,
+      "className" : "btn",
+      "value" : null,
+      "href" : null,
+      "src" : null,
+      "coordinates" : null,
+      "fingerprint" : {
+        "attributes" : {
+          "type" : "button",
+          "ariaLabel" : null,
+          "classList" : "btn",
+          "role" : null
+        },
+        "context" : null
+      },
+      "healed" : false
+    }
+  } ],
+  "metadata" : {
+    "createdDate" : "2026-01-11T20:19:13.195477500",
+    "totalActions" : 1
+  }
+}

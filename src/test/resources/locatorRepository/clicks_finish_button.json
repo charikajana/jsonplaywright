@@ -1,0 +1,40 @@
+{
+    "stepFileName": "clicks_finish_button",
+    "gherkinStep": "And clicks finish button",
+    "normalizedStep": "clicks_finish_button",
+    "stepType": "And",
+    "stepNumber": 13,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "CLICK",
+            "description": "Click Finish Button",
+            "element": {
+                "type": "input",
+                "id": "ctl00_cphMainContent_btnFinish",
+                "name": "ctl00$cphMainContent$btnFinish",
+                "selector": "internal:role=button[name=\"Finish\"i]",
+                "cssSelector": "input#ctl00_cphMainContent_btnFinish",
+                "xpath": "//input[@id='ctl00_cphMainContent_btnFinish']",
+                "role": "button",
+                "className": "btn Secondary-button btn-lg spacer-20top white-font",
+                "value": "Finish",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "input",
+                        "role": "button"
+                    },
+                    "context": {
+                        "nearbyText": "Total",
+                        "parentTag": "div",
+                        "heading": "Booking Summary"
+                    }
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

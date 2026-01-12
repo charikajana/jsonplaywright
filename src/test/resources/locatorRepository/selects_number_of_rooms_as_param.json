@@ -1,0 +1,40 @@
+{
+    "stepFileName": "selects_number_of_rooms_as_param",
+    "gherkinStep": "And selects number of rooms as \"1\"",
+    "normalizedStep": "selects_number_of_rooms_as____param____",
+    "stepType": "And",
+    "stepNumber": 5,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "SELECT",
+            "description": "Select Rooms",
+            "element": {
+                "type": "select",
+                "id": "ctl00_lstRooms",
+                "name": "ctl00$lstRooms",
+                "selector": "internal:role=combobox[name=\"Rooms\"i]",
+                "cssSelector": "select#ctl00_lstRooms",
+                "xpath": "//select[@id='ctl00_lstRooms']",
+                "role": "combobox",
+                "className": "form-control",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "select",
+                        "role": "combobox"
+                    },
+                    "context": {
+                        "nearbyText": "Rooms",
+                        "parentTag": "div",
+                        "heading": "Search"
+                    }
+                }
+            },
+            "value": "___RUNTIME_PARAMETER___"
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

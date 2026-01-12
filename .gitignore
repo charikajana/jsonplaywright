@@ -3,7 +3,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
-
+.github
+.idea
+.playwright-mcp
+.recordings
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml

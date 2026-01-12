@@ -8,6 +8,8 @@ import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.qameta.allure.Allure;
 import io.qameta.allure.model.Link;
+import com.microsoft.playwright.Page;
+import com.framework.strategy.SmartWaitStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -170,6 +172,13 @@ public class UniversalStepDefinition {
     @Given("^(.*)$")
     public void executeStep(String step) {
         logger.info("[INFO] Step: {}", step);
+        
+        // Ensure browser is fully loaded and stable before executing ANY step
+        Page page = playwrightManager.getPage();
+        if (page != null) {
+            SmartWaitStrategy.waitForPageLoad(page);
+            SmartWaitStrategy.waitForNetworkIdle(page);
+        }
         
         // Execute through JSON-enhanced executor
         // It will automatically check cache/steps/ and fallback to standard execution if needed

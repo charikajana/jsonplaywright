@@ -39,26 +39,43 @@ public class LocatorStrategy {
         
         logger.debug("[LOCATOR] Attempting {} fallback strategies", attempts.size());
         
+        Locator firstMultiMatch = null;
+        String firstMultiMatchStrategy = null;
+        String firstMultiMatchSelector = null;
+
         for (LocatorAttempt attempt : attempts) {
             try {
                 Locator locator = page.locator(attempt.selector);
+                int count = locator.count();
                 
-                // Check if element exists
-                if (locator.count() > 0) {
-                    logger.debug("[LOCATOR] OK: Found element using: {} -> {}", 
+                if (count == 1) {
+                    logger.debug("[LOCATOR] OK: Found unique element using: {} -> {}", 
                         attempt.strategy, attempt.selector);
                     return locator;
+                } else if (count > 1) {
+                    logger.debug("[LOCATOR] MULTIPLE ({}): Found multiple elements using: {} -> {}. Searching for unique match...", 
+                        count, attempt.strategy, attempt.selector);
+                    if (firstMultiMatch == null) {
+                        firstMultiMatch = locator;
+                        firstMultiMatchStrategy = attempt.strategy;
+                        firstMultiMatchSelector = attempt.selector;
+                    }
+                } else {
+                    logger.debug("[LOCATOR] FAIL: Not found using {}: {}", 
+                        attempt.strategy, attempt.selector);
                 }
-                
-                logger.debug("[LOCATOR] FAIL: Not found using {}: {}", 
-                    attempt.strategy, attempt.selector);
-                
             } catch (Exception e) {
                 logger.debug("[LOCATOR] FAIL: Error with {}: {}", 
                     attempt.strategy, e.getMessage());
             }
         }
         
+        if (firstMultiMatch != null) {
+            logger.warn("[LOCATOR] WARNING: No unique element found. Using first successful (but non-unique) strategy: {} -> {}", 
+                firstMultiMatchStrategy, firstMultiMatchSelector);
+            return firstMultiMatch;
+        }
+
         logger.error("[LOCATOR] FAILED - Element not found after {} attempts", attempts.size());
         return null;
     }

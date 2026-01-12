@@ -1,0 +1,39 @@
+{
+    "stepFileName": "clicks_add_new_traveller_button",
+    "gherkinStep": "And clicks add new traveller button",
+    "normalizedStep": "clicks_add_new_traveller_button",
+    "stepType": "And",
+    "stepNumber": 13,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "CLICK",
+            "description": "Click Add New Traveller Submit",
+            "element": {
+                "type": "button",
+                "id": "addNewContact",
+                "name": null,
+                "selector": "internal:role=button[name=\"Add New Traveller\"i]",
+                "cssSelector": "button#addNewContact",
+                "xpath": "//button[@id='addNewContact']",
+                "role": "button",
+                "className": "btn btn-primary btn-oval w-100",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "button",
+                        "role": "button"
+                    },
+                    "context": {
+                        "nearbyText": "Add New Traveller",
+                        "parentTag": "div",
+                        "heading": "Traveller Select"
+                    }
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

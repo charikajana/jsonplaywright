@@ -1,0 +1,39 @@
+{
+    "stepFileName": "clicks_ok_on_traveller_select_modal",
+    "gherkinStep": "And clicks ok on traveller select modal",
+    "normalizedStep": "clicks_ok_on_traveller_select_modal",
+    "stepType": "And",
+    "stepNumber": 14,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "CLICK",
+            "description": "Click OK in Modal",
+            "element": {
+                "type": "button",
+                "id": null,
+                "name": null,
+                "selector": "internal:role=button[name=\"OK\"i]",
+                "cssSelector": "button.btn.Secondary-button.btn-oval",
+                "xpath": "//button[contains(.,'OK')]",
+                "role": "button",
+                "className": "btn Secondary-button btn-oval w-100",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "button",
+                        "role": "button"
+                    },
+                    "context": {
+                        "nearbyText": "OK",
+                        "parentTag": "div",
+                        "heading": "Traveller Select"
+                    }
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

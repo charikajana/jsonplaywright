@@ -1,0 +1,40 @@
+{
+    "stepFileName": "select_the_rate_plan_from_param_with_refundable_param",
+    "gherkinStep": "And Select the Rate Plan from \"Sabre\" with refundable \"No\"",
+    "normalizedStep": "select_the_rate_plan_from____param____with_refundable____param____",
+    "stepType": "And",
+    "stepNumber": 10,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "CLICK",
+            "description": "Select Rate near Provider",
+            "element": {
+                "type": "a",
+                "id": null,
+                "name": null,
+                "selector": "a.btn-select-rate",
+                "cssSelector": "a[href*='SelectRate']",
+                "xpath": "//div[contains(.,'___param___')]//a[contains(.,'Select Rate')]",
+                "text": "Select Rate",
+                "role": "link",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "link",
+                        "role": "link"
+                    },
+                    "context": {
+                        "nearbyText": "___param___",
+                        "parentTag": "div",
+                        "heading": "Rates"
+                    }
+                },
+                "healed": false
+            }
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

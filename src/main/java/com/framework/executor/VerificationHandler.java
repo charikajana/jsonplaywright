@@ -4,6 +4,8 @@ import com.framework.data.ActionData;
 import com.framework.data.ElementLocators;
 import com.framework.reporting.ErrorReporter;
 import com.framework.utils.ParameterExtractor;
+import com.framework.healing.SmartLocatorFinder;
+import com.framework.strategy.SmartWaitStrategy;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
@@ -26,14 +28,25 @@ public class VerificationHandler {
         String expectedText = ParameterExtractor.extractFirstParameter(originalGherkinStep);
         if (expectedText == null) expectedText = action.getExpectedText();
         
+        // Handle runtime parameter placeholders if no parameter was extracted from Gherkin
+        if ("___RUNTIME_PARAMETER___".equals(expectedText) && locators.getText() != null) {
+            logger.debug("[VERIFY] No runtime parameter provided, falling back to recorded text: {}", locators.getText());
+            expectedText = locators.getText();
+        }
+        
         try {
-            Locator element = page.locator(locator);
-            String actualText = element.textContent();
+            Locator element = SmartLocatorFinder.findElement(page, locators);
+            if (element == null) {
+                logger.error("[ERROR] Element not found for verification: {}", locator);
+                return false;
+            }
             
-            if (actualText.contains(expectedText)) {
+            // Wait specifically for the text to appear
+            if (SmartWaitStrategy.waitForText(element, expectedText)) {
                 logger.debug("[OK] Text verified: \"{}\" found", expectedText);
                 return true;
             } else {
+                String actualText = element.textContent();
                 logger.error("[ERROR] Expected: \"{}\", Got: \"{}\"", expectedText, actualText);
                 ErrorReporter.reportVerificationError(originalGherkinStep, expectedText, actualText, locator);
                 return false;
@@ -47,13 +60,13 @@ public class VerificationHandler {
     public static boolean executeVerifyElement(Page page, ActionData action) {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
-        String locator = locators.getBestLocator();
-        Locator element = page.locator(locator);
-        if (element.isVisible()) {
-            logger.debug("[OK] Element verified visible: {}", locator);
+        
+        Locator element = SmartLocatorFinder.findElement(page, locators);
+        if (element != null && element.isVisible()) {
+            logger.debug("[OK] Element verified visible: {}", locators.getBestLocator());
             return true;
         } else {
-            logger.error("[ERROR] Element not visible: {}", locator);
+            logger.error("[ERROR] Element not visible or not found: {}", locators.getBestLocator());
             return false;
         }
     }

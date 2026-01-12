@@ -269,10 +269,10 @@ public class StepRepository {
      */
     private static StepData parseStepData(JsonNode stepNode) {
         StepData step = new StepData();
-        step.setGherkinStep(stepNode.get("gherkinStep").asText());
-        step.setStepType(stepNode.get("stepType").asText());
-        step.setStepNumber(stepNode.get("stepNumber").asInt());
-        step.setStatus(stepNode.get("status").asText());
+        step.setGherkinStep(stepNode.path("gherkinStep").asText(""));
+        step.setStepType(stepNode.path("stepType").asText(null));
+        step.setStepNumber(stepNode.path("stepNumber").asInt(0));
+        step.setStatus(stepNode.path("status").asText(null));
         
         List<ActionData> actions = new ArrayList<>();
         JsonNode actionsNode = stepNode.get("actions");

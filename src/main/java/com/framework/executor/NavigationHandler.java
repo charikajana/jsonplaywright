@@ -55,6 +55,7 @@ public class NavigationHandler {
             if ("new".equalsIgnoreCase(windowId) || "last".equalsIgnoreCase(windowId)) {
                 Page lastPage = pages.get(pages.size() - 1);
                 lastPage.bringToFront();
+                com.framework.playwright.PlaywrightManager.getInstance().setPage(lastPage);
                 logger.info("[OK] Switched to last/new window: {}", lastPage.url());
                 return true;
             }
@@ -62,6 +63,7 @@ public class NavigationHandler {
             for (Page p : pages) {
                 if (p.url().contains(windowId) || p.title().contains(windowId)) {
                     p.bringToFront();
+                    com.framework.playwright.PlaywrightManager.getInstance().setPage(p);
                     logger.info("[OK] Switched to window: {}", p.url());
                     return true;
                 }

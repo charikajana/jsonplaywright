@@ -198,6 +198,45 @@ public class SmartWaitStrategy {
             return false;
         }
     }
+
+    /**
+     * Waits for an element to contain specific text.
+     * 
+     * @param locator The Playwright locator
+     * @param expectedText The text to wait for
+     * @return true if text found, false otherwise
+     */
+    public static boolean waitForText(Locator locator, String expectedText) {
+        try {
+            long startTime = System.currentTimeMillis();
+            
+            // Wait for element to be visible first
+            if (!smartWait(locator, "VERIFY_TEXT")) {
+                return false;
+            }
+
+            int attempts = 0;
+            int maxAttempts = MEDIUM_TIMEOUT / POLL_INTERVAL;
+            
+            while (attempts < maxAttempts) {
+                String actualText = locator.textContent();
+                if (actualText != null && actualText.contains(expectedText)) {
+                    long duration = System.currentTimeMillis() - startTime;
+                    logger.debug("[WAIT] Text '{}' found after {}ms", expectedText, duration);
+                    return true;
+                }
+                Thread.sleep(POLL_INTERVAL);
+                attempts++;
+            }
+            
+            logger.warn("[WAIT] Expected text '{}' not found within {}ms", expectedText, MEDIUM_TIMEOUT);
+            return false;
+            
+        } catch (Exception e) {
+            logger.warn("[WAIT] Error waiting for text: {}", e.getMessage());
+            return false;
+        }
+    }
     
     /**
      * Determines appropriate timeout based on action type.
