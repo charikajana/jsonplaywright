@@ -6,7 +6,7 @@ target/
 .github
 .idea
 .playwright-mcp
-.recordings
+recordings
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
