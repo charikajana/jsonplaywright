@@ -43,15 +43,45 @@ public class JsonEnhancedExecutor {
         }
         
         List<ActionData> actions = stepData.getActions();
-        logger.info("[INFO] Executing step: {} ({} actions)", gherkinStep, actions != null ? actions.size() : 0);
+        Page page = playwrightManager.getPage();
+        logger.info("[INFO] Step Execution Start: {} ({} actions) | URL: {}", 
+            gherkinStep, actions != null ? actions.size() : 0, page.url());
         
         if (actions != null) {
-            for (ActionData action : actions) {
-                boolean actionSuccess = executeAction(action, gherkinStep);
+            // Track TYPE/SELECT action counter separately for parameter extraction
+            int typeSelectActionIndex = 0;
+            
+            for (int i = 0; i < actions.size(); i++) {
+                ActionData action = actions.get(i);
+                
+                // LOOKAHEAD: If this is a CLICK and the next action is SWITCH_WINDOW (new),
+                // combine them into a single reliable popup-aware action.
+                if (i + 1 < actions.size() && "CLICK".equals(action.getActionType())) {
+                    ActionData nextAction = actions.get(i + 1);
+                    if ("SWITCH_WINDOW".equals(nextAction.getActionType()) && "new".equalsIgnoreCase(nextAction.getValue())) {
+                        logger.info("[INFO] Pattern Match: CLICK + SWITCH_WINDOW(new). Executing with popup handler.");
+                        boolean success = InteractionHandler.executeClickAndSwitch(page, action);
+                        if (success) {
+                            i++; // Skip the SWITCH_WINDOW action as we handled it
+                            page = playwrightManager.getPage(); // Refresh page reference
+                            continue;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+
+                boolean actionSuccess = executeAction(action, gherkinStep, typeSelectActionIndex);
                 if (!actionSuccess) {
                     logger.error("[ERROR] Action failed: {} - {}", 
                         action.getActionType(), action.getDescription());
                     return false;
+                }
+                
+                // Increment counter only for TYPE, SELECT, SELECT_DROPDOWN and SELECT_DATE actions (they consume parameters)
+                if ("TYPE".equals(action.getActionType()) || "SELECT".equals(action.getActionType()) || 
+                    "SELECT_DROPDOWN".equals(action.getActionType()) || "SELECT_DATE".equals(action.getActionType())) {
+                    typeSelectActionIndex++;
                 }
             }
             
@@ -77,7 +107,7 @@ public class JsonEnhancedExecutor {
     /**
      * Executes a single action from JSON by delegating to specialized handlers.
      */
-    private boolean executeAction(ActionData action, String originalGherkinStep) {
+    private boolean executeAction(ActionData action, String originalGherkinStep, int typeSelectActionIndex) {
         if (action == null || action.getActionType() == null) {
             logger.warn("[WARNING] Invalid action or action type");
             return true;
@@ -100,13 +130,17 @@ public class JsonEnhancedExecutor {
                     return InteractionHandler.executeRightClick(page, action);
                     
                 case "TYPE":
-                    return InteractionHandler.executeType(page, action, originalGherkinStep);
+                    return InteractionHandler.executeType(page, action, originalGherkinStep, typeSelectActionIndex);
                     
                 case "CLEAR":
                     return InteractionHandler.executeClear(page, action);
                     
                 case "SELECT":
-                    return InteractionHandler.executeSelect(page, action, originalGherkinStep);
+                case "SELECT_DROPDOWN":
+                    return InteractionHandler.executeSelectDropdown(page, action, originalGherkinStep, typeSelectActionIndex);
+                    
+                case "SELECT_DATE":
+                    return InteractionHandler.executeSelectDate(page, action, originalGherkinStep, typeSelectActionIndex);
                     
                 case "HOVER":
                     return InteractionHandler.executeHover(page, action);

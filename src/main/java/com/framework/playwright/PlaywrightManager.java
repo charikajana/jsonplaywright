@@ -61,7 +61,7 @@ public class PlaywrightManager {
             
             String videoDir = System.getProperty("video.path", "reports/videos");
             BrowserContext context = browser.newContext(new Browser.NewContextOptions()
-                .setViewportSize(1570, 780)
+                .setViewportSize(1470, 780)
                 .setAcceptDownloads(true)
                 .setLocale("en-US")
                 .setTimezoneId("America/New_York")
@@ -71,6 +71,7 @@ public class PlaywrightManager {
             
             Page page = context.newPage();
             page.setDefaultTimeout(config.getBrowserTimeout());
+            page.setDefaultNavigationTimeout(config.getBrowserTimeout());
             pageThreadLocal.set(page);
             
             logger.info("[BROWSER] Thread-local context and page created");
@@ -87,6 +88,13 @@ public class PlaywrightManager {
             page = pageThreadLocal.get();
         }
         return page;
+    }
+
+    public void setPage(Page page) {
+        if (page != null) {
+            pageThreadLocal.set(page);
+            logger.info("[BROWSER] Thread-local page updated. Current URL: {}", page.url());
+        }
     }
     
     /**

@@ -51,7 +51,7 @@ public class ExecutionConfig {
     private void loadDefaults() {
         properties.setProperty("browser.type", "chromium");
         properties.setProperty("browser.headless", "false");
-        properties.setProperty("browser.timeout", "60000");
+        properties.setProperty("browser.timeout", "90000");
         properties.setProperty("cache.directory", "src/test/resources/locatorRepository");
     }
     
@@ -65,7 +65,7 @@ public class ExecutionConfig {
     }
     
     public int getBrowserTimeout() {
-        return Integer.parseInt(getProperty("browser.timeout", "60000"));
+        return Integer.parseInt(getProperty("browser.timeout", "90000"));
     }
     
     public int getSlowMo() {

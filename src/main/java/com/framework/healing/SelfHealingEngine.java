@@ -109,7 +109,7 @@ public class SelfHealingEngine {
             String tag = (originalType != null && !originalType.isEmpty()) ? originalType : "input, button, select";
             
             // Try relative selectors
-            String nearSelector = tag + ":near(text='" + context.getNearbyText() + "')";
+            String nearSelector = tag + ":near(:text(\"" + context.getNearbyText() + "\"))";
             Locator candidate = page.locator(nearSelector).first();
             if (candidate.count() > 0) {
                logger.info("[HEALING] [OK] Proximity match found using :near relative selector!");

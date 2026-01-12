@@ -1,0 +1,35 @@
+{
+    "stepFileName": "uncheck_policy_active_check_box",
+    "gherkinStep": "And uncheck Policy Active Check box",
+    "normalizedStep": "uncheck_policy_active_check_box",
+    "stepType": "And",
+    "stepNumber": 14,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "UNCHECK",
+            "description": "Uncheck Policy Active checkbox",
+            "element": {
+                "type": "input",
+                "id": "ctl00_cphMainContent_policyActiveChk",
+                "selector": "#ctl00_cphMainContent_policyActiveChk",
+                "cssSelector": "#ctl00_cphMainContent_policyActiveChk",
+                "xpath": "//input[@id='ctl00_cphMainContent_policyActiveChk']",
+                "role": "checkbox",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "checkbox",
+                        "role": "checkbox"
+                    },
+                    "context": {
+                        "nearbyText": "Policy Active"
+                    }
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

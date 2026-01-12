@@ -1,0 +1,37 @@
+{
+    "stepFileName": "click_on_tools",
+    "gherkinStep": "And Click on Tools",
+    "normalizedStep": "click_on_tools",
+    "stepType": "And",
+    "stepNumber": 10,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "CLICK",
+            "description": "Click on Tools menu",
+            "element": {
+                "type": "a",
+                "id": "lstTools",
+                "selector": "#lstTools",
+                "cssSelector": "#lstTools",
+                "xpath": "//a[@id='lstTools']",
+                "role": "button",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "a",
+                        "role": "button"
+                    },
+                    "context": {
+                        "parentTag": "li",
+                        "parentClass": "dropdown",
+                        "nearbyText": "Tools"
+                    }
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

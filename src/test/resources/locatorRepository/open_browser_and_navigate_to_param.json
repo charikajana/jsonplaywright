@@ -1,0 +1,20 @@
+{
+    "stepFileName": "open_browser_and_navigate_to_param",
+    "gherkinStep": "Given Open Browser and Navigate to \"https://hotelbooker.cert.sabre.com\"",
+    "normalizedStep": "open_browser_and_navigate_to____param____",
+    "stepType": "Given",
+    "stepNumber": 1,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "NAVIGATE",
+            "description": "Navigate to Sabre Hotel Booker",
+            "url": "___RUNTIME_PARAMETER___"
+        }
+    ],
+    "metadata": {
+        "createdDate": "2026-01-11T12:26:00",
+        "totalActions": 1
+    }
+}

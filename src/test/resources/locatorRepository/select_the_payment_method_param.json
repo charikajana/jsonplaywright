@@ -1,0 +1,40 @@
+{
+    "stepFileName": "select_the_payment_method_param",
+    "gherkinStep": "And select the payment method \"Conferma Settlement Platform\"",
+    "normalizedStep": "select_the_payment_method____param____",
+    "stepType": "And",
+    "stepNumber": 12,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "CLICK",
+            "description": "Select Payment Method",
+            "element": {
+                "type": "div",
+                "id": "paymentMethod320",
+                "name": null,
+                "selector": "text=\"Conferma Settlement Platform\"",
+                "cssSelector": "div.paymentMETHOD",
+                "xpath": "//div[contains(@class,'paymentMETHOD') and contains(.,'Conferma Settlement Platform')]",
+                "text": "Conferma Settlement Platform",
+                "role": "button",
+                "className": "back-block tertiary-color10 spacer-10top paymentMETHOD",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "div",
+                        "role": "button"
+                    },
+                    "context": {
+                        "nearbyText": "Payment Method",
+                        "parentTag": "div",
+                        "heading": "Booking Summary"
+                    }
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

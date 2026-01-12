@@ -6,6 +6,7 @@ import com.framework.reporting.ErrorReporter;
 import com.framework.strategy.LocatorStrategy;
 import com.framework.healing.SmartLocatorFinder;
 import com.framework.strategy.SmartWaitStrategy;
+import com.framework.utils.DateResolver;
 import com.framework.utils.ParameterExtractor;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -26,6 +27,7 @@ public class InteractionHandler {
         }
         
         try {
+            String beforeUrl = page.url();
             Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) {
                 ErrorReporter.reportLocatorError("Click action", 
@@ -38,7 +40,17 @@ public class InteractionHandler {
             }
             
             element.click();
+            
+            // Wait for potential navigation or state change
             SmartWaitStrategy.waitForPageLoad(page);
+            SmartWaitStrategy.waitForNetworkIdle(page);
+            
+            String afterUrl = page.url();
+            if (!beforeUrl.equals(afterUrl)) {
+                logger.info("[OK] Navigated from {} to {}", beforeUrl, afterUrl);
+            } else {
+                logger.info("[INFO] Clicked but URL remained: {}", afterUrl);
+            }
             
             String successfulLocator = LocatorStrategy.getSuccessfulSelector(page, locators);
             logger.debug("[OK] Clicked: {}", successfulLocator);
@@ -49,14 +61,44 @@ public class InteractionHandler {
         }
     }
 
-    public static boolean executeType(Page page, ActionData action, String originalGherkinStep) {
+    /**
+     * Handles clicks that open a new popup/window using Playwright's waitForPopup.
+     */
+    public static boolean executeClickAndSwitch(Page page, ActionData action) {
+        ElementLocators locators = action.getElement();
+        if (locators == null) return false;
+
+        try {
+            Locator element = SmartLocatorFinder.findElement(page, locators);
+            if (element == null) return false;
+
+            logger.info("[WINDOW] Clicking and waiting for popup...");
+            Page popup = page.waitForPopup(() -> {
+                element.click();
+            });
+
+            if (popup != null) {
+                popup.waitForLoadState(com.microsoft.playwright.options.LoadState.LOAD);
+                com.framework.playwright.PlaywrightManager.getInstance().setPage(popup);
+                logger.info("[OK] Popup captured and switched: {}", popup.url());
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            logger.error("[ERROR] Click and switch failed: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean executeType(Page page, ActionData action, String originalGherkinStep, int actionIndex) {
         ElementLocators locators = action.getElement();
         if (locators == null) {
             logger.error("[ERROR] No element locators for type action");
             return false;
         }
         
-        String value = ParameterExtractor.extractFirstParameter(originalGherkinStep);
+        // Extract parameter at the correct index based on action number
+        String value = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
         if (value == null) value = action.getValue();
         
         try {
@@ -130,19 +172,74 @@ public class InteractionHandler {
         }
     }
 
-    public static boolean executeSelect(Page page, ActionData action, String originalGherkinStep) {
+    public static boolean executeSelect(Page page, ActionData action, String originalGherkinStep, int actionIndex) {
+        return executeSelectDropdown(page, action, originalGherkinStep, actionIndex);
+    }
+
+    public static boolean executeSelectDropdown(Page page, ActionData action, String originalGherkinStep, int actionIndex) {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
-        String val = ParameterExtractor.extractFirstParameter(originalGherkinStep);
+        String val = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
         if (val == null) val = action.getValue();
         try {
             Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
+            
+            if (!SmartWaitStrategy.waitForEnabled(element)) {
+                logger.warn("[WAIT] Dropdown not enabled: {}", locators.getBestLocator());
+            }
+            
             element.selectOption(val);
-            logger.debug("[OK] Selected '{}' from: {}", val, locators.getBestLocator());
+            logger.debug("[OK] Selected '{}' from dropdown: {}", val, locators.getBestLocator());
             return true;
         } catch (Exception e) {
-            logger.error("[ERROR] Select failed: {}", e.getMessage());
+            logger.error("[ERROR] Dropdown selection failed: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean executeSelectDate(Page page, ActionData action, String originalGherkinStep, int actionIndex) {
+        ElementLocators locators = action.getElement();
+        if (locators == null) return false;
+        
+        String dateInput = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
+        if (dateInput == null) dateInput = action.getValue();
+        
+        // Resolve date using our new utility
+        // Defaulting to dd-MM-yyyy but could be parameterized in JSON if needed
+        String resolvedDate = DateResolver.resolveDate(dateInput, "dd-MM-yyyy");
+        
+        try {
+            Locator element = SmartLocatorFinder.findElement(page, locators);
+            if (element == null) return false;
+            
+            if (!SmartWaitStrategy.waitForEnabled(element)) {
+                logger.warn("[WAIT] Date field not enabled: {}", locators.getBestLocator());
+            }
+
+            // More robust clearing and entry for date fields
+            element.focus();
+            element.fill(""); // Try standard clear
+            
+            // If still not empty (masked inputs), try select all and backspace
+            String currentVal = element.inputValue();
+            if (currentVal != null && !currentVal.isEmpty()) {
+                element.click();
+                page.keyboard().press("Control+A");
+                page.keyboard().press("Backspace");
+            }
+
+            // Type the date with a slight delay
+            element.type(resolvedDate, new Locator.TypeOptions().setDelay(30));
+            
+            // Press Tab or Enter to trigger blur/change events
+            element.press("Tab");
+            
+            logger.debug("[OK] Date '{}' (resolved from '{}') input into: {}", 
+                resolvedDate, dateInput, locators.getBestLocator());
+            return true;
+        } catch (Exception e) {
+            logger.error("[ERROR] Date entry failed: {}", e.getMessage());
             return false;
         }
     }

@@ -1,0 +1,40 @@
+{
+    "stepFileName": "selects_number_of_guests_as_param",
+    "gherkinStep": "And selects number of guests as \"1\"",
+    "normalizedStep": "selects_number_of_guests_as____param____",
+    "stepType": "And",
+    "stepNumber": 6,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "SELECT",
+            "description": "Select Guests (Occupancy)",
+            "element": {
+                "type": "select",
+                "id": "ctl00_lstOccupancy",
+                "name": "ctl00$lstOccupancy",
+                "selector": "internal:role=combobox[name=\"Occupancy\"i]",
+                "cssSelector": "select#ctl00_lstOccupancy",
+                "xpath": "//select[@id='ctl00_lstOccupancy']",
+                "role": "combobox",
+                "className": "form-control",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "select",
+                        "role": "combobox"
+                    },
+                    "context": {
+                        "nearbyText": "Occupancy",
+                        "parentTag": "div",
+                        "heading": "Search"
+                    }
+                }
+            },
+            "value": "___RUNTIME_PARAMETER___"
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

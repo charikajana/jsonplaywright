@@ -1,0 +1,37 @@
+{
+    "stepFileName": "select_param_from_dropdown",
+    "gherkinStep": "And Select \"Test QA Client(Sabre)\" from dropdown",
+    "normalizedStep": "select____param____from_dropdown",
+    "stepType": "And",
+    "stepNumber": 12,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "SELECT_DROPDOWN",
+            "description": "Select client from dropdown",
+            "element": {
+                "type": "select",
+                "id": "ctl00_ClientDropdownlist",
+                "selector": "#ctl00_ClientDropdownlist",
+                "cssSelector": "#ctl00_ClientDropdownlist",
+                "xpath": "//select[@id='ctl00_ClientDropdownlist']",
+                "role": "combobox",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "select",
+                        "role": "combobox"
+                    },
+                    "context": {
+                        "parentTag": "li",
+                        "nearbyText": "Select"
+                    }
+                }
+            },
+            "value": "___RUNTIME_PARAMETER___"
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

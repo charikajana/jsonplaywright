@@ -18,6 +18,19 @@ public class SmartLocatorFinder {
      * and falling back to the Self-Healing Engine if they fail.
      */
     public static Locator findElement(Page page, ElementLocators locators) {
+        // Step 0: Ensure we are on a stable page and the element has a chance to appear
+        String bestLocator = locators.getBestLocator();
+        if (bestLocator != null) {
+            try {
+                // Short sync wait to handle race conditions after navigation
+                page.locator(bestLocator).waitFor(new Locator.WaitForOptions()
+                    .setState(com.microsoft.playwright.options.WaitForSelectorState.ATTACHED)
+                    .setTimeout(5000));
+            } catch (Exception e) {
+                logger.debug("[FINDER] Best locator not found immediately, trying fallbacks...");
+            }
+        }
+
         // Step 1: Try Standard Fallback (Fast Path)
         Locator element = LocatorStrategy.findElementWithFallback(page, locators);
         

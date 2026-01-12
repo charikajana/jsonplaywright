@@ -1,0 +1,94 @@
+{
+    "stepFileName": "enters_guest_details_first_name_param_and_surname_param_and_email_param",
+    "gherkinStep": "And enters guest details first name \"QA\" and surname \"Sabre\" and email \"tester@sabre.com\"",
+    "normalizedStep": "enters_guest_details_first_name____param____and_surname____param____and_email____param____",
+    "stepType": "And",
+    "stepNumber": 12,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "TYPE",
+            "description": "Enter First Name",
+            "element": {
+                "type": "input",
+                "id": "ctl00_ucTravellerSelect_ForenameTxt",
+                "name": "ctl00$ucTravellerSelect$ForenameTxt",
+                "selector": "internal:role=textbox[name=\"First Name*\"i]",
+                "cssSelector": "input#ctl00_ucTravellerSelect_ForenameTxt",
+                "xpath": "//input[@id='ctl00_ucTravellerSelect_ForenameTxt']",
+                "role": "textbox",
+                "className": "form-control ForenameTxt",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "input",
+                        "role": "textbox"
+                    },
+                    "context": {
+                        "nearbyText": "First Name",
+                        "parentTag": "div",
+                        "heading": "Traveller Select"
+                    }
+                }
+            },
+            "value": "___RUNTIME_PARAMETER___"
+        },
+        {
+            "actionNumber": 2,
+            "actionType": "TYPE",
+            "description": "Enter Surname",
+            "element": {
+                "type": "input",
+                "id": "ctl00_ucTravellerSelect_SurNameTxt",
+                "name": "ctl00$ucTravellerSelect$SurNameTxt",
+                "selector": "internal:role=textbox[name=\"Surname*\"i]",
+                "cssSelector": "input#ctl00_ucTravellerSelect_SurNameTxt",
+                "xpath": "//input[@id='ctl00_ucTravellerSelect_SurNameTxt']",
+                "role": "textbox",
+                "className": "form-control SurNameTxt",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "input",
+                        "role": "textbox"
+                    },
+                    "context": {
+                        "nearbyText": "Surname",
+                        "parentTag": "div",
+                        "heading": "Traveller Select"
+                    }
+                }
+            },
+            "value": "___RUNTIME_PARAMETER___"
+        },
+        {
+            "actionNumber": 3,
+            "actionType": "TYPE",
+            "description": "Enter Email",
+            "element": {
+                "type": "input",
+                "id": "ctl00_ucTravellerSelect_EmailAddressTxt",
+                "name": "ctl00$ucTravellerSelect$EmailAddressTxt",
+                "selector": "internal:role=textbox[name=\"Email*\"i]",
+                "cssSelector": "input#ctl00_ucTravellerSelect_EmailAddressTxt",
+                "xpath": "//input[@id='ctl00_ucTravellerSelect_EmailAddressTxt']",
+                "role": "textbox",
+                "className": "form-control EmailAddressTxt",
+                "fingerprint": {
+                    "attributes": {
+                        "type": "input",
+                        "role": "textbox"
+                    },
+                    "context": {
+                        "nearbyText": "Email",
+                        "parentTag": "div",
+                        "heading": "Traveller Select"
+                    }
+                }
+            },
+            "value": "___RUNTIME_PARAMETER___"
+        }
+    ],
+    "metadata": {
+        "totalActions": 3
+    }
+}
