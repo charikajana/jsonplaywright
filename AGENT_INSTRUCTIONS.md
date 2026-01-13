@@ -6,7 +6,7 @@ Build and maintain a **"Strong" JSON-based Locator Repository** that serves as t
 ## 2. Mandatory Requirements
 
 ### A. Pre-Execution Check
-- **Normalize Step**: Convert the Gherkin step into a filename-safe format (Lowercase, spaces to `_`, and replace specific values/digits with `___param___`).
+- **Normalize Step**: Convert the Gherkin step into a filename-safe format (Lowercase, spaces to `_`, and replace specific values/digits with `_param_`).
 - **Verify Existence**: Always check if `src/test/resources/locatorRepository/[normalized_name].json` already exists. If it exists, **stop** and inform the user; do not duplicate data.
 
 ### B. Live Interaction Workflow
@@ -23,7 +23,7 @@ For every element involved in an action, you MUST extract the following 17 attri
 
 ### E. Execution Standards
 - **Specific ActionTypes**: Map every action to these exact types: `NAVIGATE`, `CLICK`, `DOUBLE_CLICK`, `RIGHT_CLICK`, `TYPE`, `CLEAR`, `SELECT`, `HOVER`, `CHECK`, `UNCHECK`, `PRESS_KEY`, `SWITCH_WINDOW`, `DRAG_DROP`, `SCROLL`, `WAIT_NAVIGATION`, `VERIFY_TEXT`, `VERIFY_ELEMENT`, `SCREENSHOT`.
-- **Parameterization**: Use `___RUNTIME_PARAMETER___` for action values and `___param___` for normalized step names.
+- **Parameterization**: Use `___RUNTIME_PARAMETER___` for action values and `_param_` for normalized step names.
 
 ## 3. Expected Outcomes
 - **Comprehensive JSON**: A file in `src/test/resources/locatorRepository/` that follows the rigorous schema provided in the examples.
@@ -43,7 +43,7 @@ For every element involved in an action, you MUST extract the following 17 attri
 {
   "stepFileName": "login_to_account",
   "gherkinStep": "Enter username \"student\" and password \"Password123\" and click login",
-  "normalizedStep": "enter_username____param____and_password____param____and_click_login",
+  "normalizedStep": "enter_username_param_and_password_param_and_click_login",
   "stepType": "When",
   "stepNumber": 1,
   "status": "passed",
