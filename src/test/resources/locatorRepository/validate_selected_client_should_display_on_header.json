@@ -1,0 +1,49 @@
+{
+    "stepFileName": "validate_selected_client_should_display_on_header",
+    "gherkinStep": "Then Validate selected client should display on header",
+    "normalizedStep": "validate_selected_client_should_display_on_header",
+    "stepType": "Then",
+    "stepNumber": 5,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "VERIFY_TEXT",
+            "description": "Verify client name in header",
+            "element": {
+                "type": "li",
+                "id": "ctl00_ucNavigation_liClientSelect",
+                "name": null,
+                "selector": "#ctl00_ucNavigation_liClientSelect",
+                "cssSelector": "li#ctl00_ucNavigation_liClientSelect",
+                "xpath": "//*[@id=\"ctl00_ucNavigation_liClientSelect\"]",
+                "text": "Test QA Client(Sabre)",
+                "placeholder": null,
+                "dataTest": null,
+                "ariaLabel": null,
+                "role": null,
+                "title": null,
+                "alt": null,
+                "className": "dropdown spacer-20right",
+                "value": null,
+                "href": null,
+                "src": null,
+                "fingerprint": {
+                    "attributes": {
+                        "type": "li",
+                        "classList": "dropdown spacer-20right"
+                    },
+                    "context": {
+                        "nearbyText": "Test QA Client(Sabre)",
+                        "parentTag": "ul",
+                        "heading": "Header Toolbar"
+                    }
+                }
+            },
+            "expectedText": "Test QA Client(Sabre)"
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

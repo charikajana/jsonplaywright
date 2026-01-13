@@ -1,0 +1,49 @@
+{
+    "stepFileName": "selects_client_param",
+    "gherkinStep": "And selects client \"Test QA Client(Sabre)\"",
+    "normalizedStep": "selects_client_param",
+    "stepType": "And",
+    "stepNumber": 4,
+    "status": "passed",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "CLICK",
+            "description": "Select Client",
+            "element": {
+                "type": "h2",
+                "id": null,
+                "name": null,
+                "selector": "h2:has-text(\"Test QA Client(Sabre)\")",
+                "cssSelector": "h2",
+                "xpath": "//h2[contains(text(), 'Test QA Client(Sabre)')]",
+                "text": "Test QA Client(Sabre)",
+                "placeholder": null,
+                "dataTest": null,
+                "ariaLabel": null,
+                "role": "heading",
+                "title": null,
+                "alt": null,
+                "className": null,
+                "value": null,
+                "href": null,
+                "src": null,
+                "fingerprint": {
+                    "attributes": {
+                        "type": "h2",
+                        "role": "heading",
+                        "classList": null
+                    },
+                    "context": {
+                        "nearbyText": "Test QA Client(Sabre)",
+                        "parentTag": "div",
+                        "heading": "Client Select"
+                    }
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "totalActions": 1
+    }
+}

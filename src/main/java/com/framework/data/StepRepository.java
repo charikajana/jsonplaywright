@@ -232,7 +232,7 @@ public class StepRepository {
         
         String sanitized = normalized
             .replaceAll("['\"`]", "")           // Remove quotes
-            .replaceAll("[^a-z0-9\\s-]", "")     // Keep only alphanumeric, spaces, hyphens
+            .replaceAll("[^a-z0-9\\s_-]", "")    // Keep alphanumeric, spaces, underscores, hyphens
             .trim()
             .replaceAll("\\s+", "_")            // Replace spaces with underscores
             .replaceAll("_+", "_")              // Remove duplicate underscores
@@ -259,7 +259,7 @@ public class StepRepository {
     private static String normalizeStepText(String stepText) {
         return stepText
             .replaceAll("^(Given|When|Then|And|But)\\s+", "")
-            .replaceAll("\"[^\"]*\"", "___param___") // Mask quoted values directly
+            .replaceAll("\"[^\"]*\"", "_param_") // Mask quoted values directly
             .trim()
             .toLowerCase();
     }
