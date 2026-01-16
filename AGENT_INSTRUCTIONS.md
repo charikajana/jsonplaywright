@@ -29,7 +29,41 @@ For every element involved in an action, you MUST extract the following 17 attri
 - **Sequence Integrity**: If a Gherkin step contains multiple intents (e.g., "Enter username and password"), you must execute each part and record them as sequential objects in the `actions` array.
 
 ### E. Execution Standards
-- **Specific ActionTypes**: Map every action to these exact types: `NAVIGATE`, `CLICK`, `DOUBLE_CLICK`, `RIGHT_CLICK`, `TYPE`, `CLEAR`, `SELECT`, `HOVER`, `CHECK`, `UNCHECK`, `PRESS_KEY`, `SWITCH_WINDOW`, `CLICK_AND_SWITCH`, `DRAG_AND_DROP`, `SCROLL_TO`, `WAIT_STABLE`, `JS_EVALUATE`, `UPLOAD_FILE`, `HANDLE_DIALOG`, `VERIFY_TEXT`, `VERIFY_ELEMENT`, `VERIFY_NOT_VISIBLE`, `VERIFY_ATTRIBUTE`, `VERIFY_CSS`, `GET_TEXT`, `SCREENSHOT`.
+- **Specific ActionTypes**: Map every action to these exact types: `NAVIGATE`, `CLICK`, `DOUBLE_CLICK`, `RIGHT_CLICK`, `TYPE`, `CLEAR`, `SELECT`, `SELECT_DROPDOWN`, `SELECT_DATE`, `HOVER`, `CHECK`, `UNCHECK`, `PRESS_KEY`, `SWITCH_WINDOW`, `CLICK_AND_SWITCH`, `CLOSE_WINDOW`, `DRAG_DROP`, `SCROLL`, `WAIT_STABLE`, `WAIT_FOR_RELOAD`, `WAIT_NAVIGATION`, `JS_EVALUATE`, `UPLOAD_FILE`, `HANDLE_DIALOG`, `VERIFY_TEXT`, `VERIFY_ELEMENT`, `VERIFY_ELEMENTS`, `GET_TEXT`, `SCREENSHOT`.
+
+### F. Critical Action Selection Rules
+
+#### When to Use `CLICK` vs `CLICK_AND_SWITCH`:
+| Scenario | Action Type |
+|----------|-------------|
+| Link navigates in same window | `CLICK` + `WAIT_STABLE` |
+| Link opens new tab/window (`target="_blank"`) | `CLICK_AND_SWITCH` + `WAIT_STABLE` |
+| Button opens popup window | `CLICK_AND_SWITCH` + `WAIT_STABLE` |
+| Clicking "Admin", "Tools", "Help" that opens popup | `CLICK_AND_SWITCH` + `WAIT_STABLE` |
+
+#### When to Use `WAIT_STABLE` vs `WAIT_FOR_RELOAD`:
+| Scenario | Action Type |
+|----------|-------------|
+| After clicking a navigation link | `WAIT_STABLE` |
+| After form submission | `WAIT_STABLE` |
+| After dropdown selection that triggers page refresh/postback | `WAIT_FOR_RELOAD` |
+| After AJAX operation that reloads content | `WAIT_FOR_RELOAD` |
+| After clicking button that stays on same URL but refreshes | `WAIT_FOR_RELOAD` |
+
+#### Multi-Window Workflow Pattern:
+```
+1. CLICK_AND_SWITCH → Opens and switches to popup
+2. WAIT_STABLE → Wait for popup to load
+3. [... perform actions in popup ...]
+4. CLOSE_WINDOW → Close popup and return to main window
+```
+
+### G. Selector Best Practices
+- **PREFER Simple Selectors**: `#id`, `[name='x']`, `a[href*='keyword']`, `button:has-text('Text')`
+- **AVOID Complex Selectors**: Nested `:has()`, `:near()`, `:nth-child()` chains
+- **TEST Selector Complexity**: If a selector has more than 2 pseudo-selectors, simplify it
+- **Fallback Strategy**: The framework tries multiple locators; provide at least `id`, `selector`, `cssSelector`, and `xpath`
+
     - **VERIFY_TEXT**: Include `"comparisonType": "CONTAINS"` or `"EXACTLY"`.
 - **Parameterization**: 
     - Use `___RUNTIME_PARAMETER___` for values coming from Gherkin.
@@ -48,8 +82,43 @@ For every element involved in an action, you MUST extract the following 17 attri
 - **NO Overwriting**: DO NOT overwrite an existing JSON file unless the user explicitly asks for a "Refresh" or "Update."
 - **NO Generic Selectors**: DO NOT use weak locators like `nth-child` if stronger attributes (ID, Name, ARIA) are available.
 - **NO Missing Attributes**: DO NOT skip any of the 17 mandatory attributes, even if the element is simple.
+- **NO Extra Attributes**: DO NOT add attributes like `aria-label` (with hyphen). Use `ariaLabel` (camelCase) as per the schema. Unknown fields may cause deserialization issues.
 
-## 5. Example JSON Outcome: `login_to_account.json`
+## 5. Pre-Flight Checklist (Before Creating JSON)
+
+Before creating a JSON file, verify:
+
+| Check | Question | If Yes |
+|-------|----------|--------|
+| 🔗 **Popup Link?** | Does clicking this element open a new window/tab? | Use `CLICK_AND_SWITCH` + `WAIT_STABLE` |
+| 🔄 **Page Refresh?** | Does the action cause the page to refresh (same URL)? | Add `WAIT_FOR_RELOAD` after the action |
+| 🚀 **Navigation?** | Does clicking navigate to a different URL? | Add `WAIT_STABLE` after `CLICK` |
+| 📋 **Dropdown Postback?** | Does selecting from dropdown refresh the page? | Add `WAIT_FOR_RELOAD` after `SELECT` |
+| 🪟 **Multi-Window?** | Is this step in a popup window? | Ensure `CLICK_AND_SWITCH` was used to open it |
+| 🔚 **Cleanup Needed?** | At end of popup workflow? | Add `CLOSE_WINDOW` to return to main |
+
+## 6. Troubleshooting Common Issues
+
+### Issue: Element Not Found
+**Causes & Fixes:**
+1. ❌ Page not fully loaded → Add `WAIT_STABLE` or `WAIT_FOR_RELOAD` before the step
+2. ❌ Element in popup window → Use `CLICK_AND_SWITCH` to open popup first
+3. ❌ Selector too complex → Simplify to `a[href*='keyword']` or `#id`
+4. ❌ Wrong page context → Check URL in logs matches expected page
+
+### Issue: Click Happened But Nothing Changed
+**Causes & Fixes:**
+1. ❌ Clicked wrong element → Use more specific selector or add `text` attribute
+2. ❌ Element opens popup but used `CLICK` → Change to `CLICK_AND_SWITCH`
+3. ❌ Page refresh needed → Add `WAIT_FOR_RELOAD` after the click
+
+### Issue: Action Works Locally But Fails in Test
+**Causes & Fixes:**
+1. ❌ Timing issue → Add wait action (`WAIT_STABLE` or `WAIT_FOR_RELOAD`)
+2. ❌ Page renders differently → Use multiple fallback selectors
+3. ❌ Dynamic content → Wait for specific element, not just page load
+
+## 7. Example JSON Outcome: `login_to_account.json`
 
 ```json
 {
@@ -153,5 +222,75 @@ For every element involved in an action, you MUST extract the following 17 attri
     "createdDate": "2026-01-11T11:32:00",
     "totalActions": 3
   }
+}
+```
+
+## 8. Example: Popup Window Workflow
+
+### Step 1: `click_on_admin_and_switch_to_new_window.json`
+```json
+{
+  "stepFileName": "click_on_admin_and_switch_to_new_window",
+  "gherkinStep": "click on Admin and switch to new window",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLICK_AND_SWITCH",
+      "description": "Click Admin link and switch to popup window",
+      "element": {
+        "type": "a",
+        "selector": "a:has-text('Admin')",
+        "text": "Admin",
+        "href": "/admin"
+      }
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_STABLE",
+      "description": "Wait for popup window to fully load"
+    }
+  ]
+}
+```
+
+### Step 2: `select_param_from_dropdown.json` (with page refresh)
+```json
+{
+  "stepFileName": "select_param_from_dropdown",
+  "gherkinStep": "select \"<value>\" from dropdown",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "SELECT",
+      "description": "Select value from dropdown",
+      "element": {
+        "type": "select",
+        "id": "clientDropdown",
+        "selector": "#clientDropdown"
+      },
+      "value": "___RUNTIME_PARAMETER___"
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_FOR_RELOAD",
+      "description": "Wait for page to reload after selection",
+      "timeout": 30000
+    }
+  ]
+}
+```
+
+### Step 3: `close_window_and_return_to_main.json`
+```json
+{
+  "stepFileName": "close_window_and_return_to_main",
+  "gherkinStep": "Close the current window and switch to main window",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLOSE_WINDOW",
+      "description": "Close popup and return to main window"
+    }
+  ]
 }
 ```
