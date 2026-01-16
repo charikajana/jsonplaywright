@@ -6,8 +6,15 @@ Build and maintain a **"Strong" JSON-based Locator Repository** that serves as t
 ## 2. Mandatory Requirements
 
 ### A. Pre-Execution Check
-- **Normalize Step**: Convert the Gherkin step into a filename-safe format (Lowercase, spaces to `_`, and replace specific values/digits with `_param_`).
-- **Verify Existence**: Always check if `src/test/resources/locatorRepository/[normalized_name].json` already exists. If it exists, **stop** and inform the user; do not duplicate data.
+- **Normalize Step**: Convert the Gherkin step into the exact filename format used by Java's `StepRepository`:
+    1. Remove "Given/When/Then/And/But" from the start.
+    2. Replace all scenario parameters (`"<param>"` or `<param>`) with `_param_`.
+    3. Convert to **lowercase**.
+    4. Replace all spaces and special characters with `_`.
+    5. **CRITICAL**: Remove all leading/trailing underscores and duplicate underscores.
+        - **End Parameter**: `selects distance "<distance>"` ➔ `selects_distance_param`
+        - **Middle Parameter**: `selects arrival date <days> days from today` ➔ `selects_arrival_date_param_days_from_today`
+- **Verify Existence**: Always check if `src/test/resources/locatorRepository/[normalized_name].json` already exists.
 
 ### B. Live Interaction Workflow
 - **Browser Execution**: You MUST use your browser tools (Playwright/MCP) to navigate and **complete the actual step** on the live website.
@@ -22,8 +29,13 @@ For every element involved in an action, you MUST extract the following 17 attri
 - **Sequence Integrity**: If a Gherkin step contains multiple intents (e.g., "Enter username and password"), you must execute each part and record them as sequential objects in the `actions` array.
 
 ### E. Execution Standards
-- **Specific ActionTypes**: Map every action to these exact types: `NAVIGATE`, `CLICK`, `DOUBLE_CLICK`, `RIGHT_CLICK`, `TYPE`, `CLEAR`, `SELECT`, `HOVER`, `CHECK`, `UNCHECK`, `PRESS_KEY`, `SWITCH_WINDOW`, `DRAG_DROP`, `SCROLL`, `WAIT_NAVIGATION`, `VERIFY_TEXT`, `VERIFY_ELEMENT`, `SCREENSHOT`.
-- **Parameterization**: Use `___RUNTIME_PARAMETER___` for action values and `_param_` for normalized step names.
+- **Specific ActionTypes**: Map every action to these exact types: `NAVIGATE`, `CLICK`, `DOUBLE_CLICK`, `RIGHT_CLICK`, `TYPE`, `CLEAR`, `SELECT`, `HOVER`, `CHECK`, `UNCHECK`, `PRESS_KEY`, `SWITCH_WINDOW`, `CLICK_AND_SWITCH`, `DRAG_AND_DROP`, `SCROLL_TO`, `WAIT_STABLE`, `JS_EVALUATE`, `UPLOAD_FILE`, `HANDLE_DIALOG`, `VERIFY_TEXT`, `VERIFY_ELEMENT`, `VERIFY_NOT_VISIBLE`, `VERIFY_ATTRIBUTE`, `VERIFY_CSS`, `GET_TEXT`, `SCREENSHOT`.
+    - **VERIFY_TEXT**: Include `"comparisonType": "CONTAINS"` or `"EXACTLY"`.
+- **Parameterization**: 
+    - Use `___RUNTIME_PARAMETER___` for values coming from Gherkin.
+    - Use `RANDOM_FIRST_NAME`, `RANDOM_EMAIL`, etc., for fields requiring unique data.
+    - Use `VAR_NAME` (e.g., `VAR_BOOKING_ID`) in `GET_TEXT` to capture values, and the same name in `TYPE` to reuse them.
+- **Capture Logic**: When using `GET_TEXT`, the `value` field in JSON must contain the Variable Name (e.g., `"value": "VAR_BOOKING_ID"`).
 
 ## 3. Expected Outcomes
 - **Comprehensive JSON**: A file in `src/test/resources/locatorRepository/` that follows the rigorous schema provided in the examples.

@@ -1,0 +1,14 @@
+{
+    "stepFileName": "user_navigates_to_param_",
+    "gherkinStep": "User navigates to \"https://adactinhotelapp.com/\"",
+    "normalizedStep": "user_navigates_to_param_",
+    "stepType": "Given",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "NAVIGATE",
+            "description": "Navigate to URL",
+            "url": "___RUNTIME_PARAMETER___"
+        }
+    ]
+}

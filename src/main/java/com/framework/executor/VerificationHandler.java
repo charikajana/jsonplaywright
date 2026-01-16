@@ -25,9 +25,15 @@ public class VerificationHandler {
         }
         
         String locator = locators.getBestLocator();
-        String expectedText = ParameterExtractor.extractFirstParameter(originalGherkinStep);
-        if (expectedText == null) expectedText = action.getExpectedText();
+        String rawExpectedText = ParameterExtractor.extractFirstParameter(originalGherkinStep);
+        if (rawExpectedText == null) rawExpectedText = action.getExpectedText();
         
+        // Resolve random keywords (uses cached value if already generated)
+        String expectedText = com.framework.utils.RandomDataResolver.resolve(rawExpectedText);
+        
+        String comparisonType = action.getComparisonType() != null ? action.getComparisonType().toUpperCase() : "CONTAINS";
+        logger.info("[VERIFY] Starting verification | Expected: \"{}\" | Type: {}", expectedText, comparisonType);
+
         // Handle runtime parameter placeholders if no parameter was extracted from Gherkin
         if ("___RUNTIME_PARAMETER___".equals(expectedText) && locators.getText() != null) {
             logger.debug("[VERIFY] No runtime parameter provided, falling back to recorded text: {}", locators.getText());
@@ -41,13 +47,33 @@ public class VerificationHandler {
                 return false;
             }
             
-            // Wait specifically for the text to appear
-            if (SmartWaitStrategy.waitForText(element, expectedText)) {
-                logger.debug("[OK] Text verified: \"{}\" found", expectedText);
+            // Wait with a simple loop to handle dynamic text changes
+            String actualText = "";
+            long startTime = System.currentTimeMillis();
+            boolean matched = false;
+            
+            while (System.currentTimeMillis() - startTime < 7000) {
+                actualText = element.textContent();
+                if (actualText == null || actualText.trim().isEmpty()) {
+                    actualText = (String) element.evaluate("el => el.value || el.innerText || ''");
+                }
+                actualText = actualText != null ? actualText.trim() : "";
+                
+                if ("EXACTLY".equals(comparisonType)) {
+                    matched = actualText.equals(expectedText);
+                } else {
+                    matched = actualText.contains(expectedText);
+                }
+                
+                if (matched) break;
+                Thread.sleep(200);
+            }
+
+            if (matched) {
+                logger.info("[SUCCESS] Verification Passed | Expected: \"{}\" | Actual: \"{}\" | Type: {}", expectedText, actualText, comparisonType);
                 return true;
             } else {
-                String actualText = element.textContent();
-                logger.error("[ERROR] Expected: \"{}\", Got: \"{}\"", expectedText, actualText);
+                logger.error("[FAILURE] Verification Failed | Expected: \"{}\" | Actual: \"{}\" | Type: {}", expectedText, actualText, comparisonType);
                 ErrorReporter.reportVerificationError(originalGherkinStep, expectedText, actualText, locator);
                 return false;
             }
