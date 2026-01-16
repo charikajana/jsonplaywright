@@ -28,6 +28,7 @@ Feature: HotelBooker Travel Policy Management
     And selects number of guests as "<guests>"
     And selects arrival date "<days>" days from today
     And clicks on search button
+    And Select the Rate Plan from "<provider>" with refundable "<refundable>"
 
 
      Examples:

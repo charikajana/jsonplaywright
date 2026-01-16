@@ -586,126 +586,50 @@ public static void attachText(String name, String content)
 
 ---
 
-## 4. JSON Repository Schema
+## 4. JSON Locator Repository Protocols & Best Practices
 
-### 4.1 Complete JSON Example
+### 4.1 Step-to-JSON Normalization Protocol
+- Remove "Given", "When", "Then", "And", "But" from the start of the Gherkin step.
+- Replace all parameters (`"<param>"` or <param>) with `_param_`.
+- Convert to lowercase.
+- Replace all spaces and special characters with `_`.
+- Remove leading/trailing and duplicate underscores.
+- Example:  
+  - `selects client "<client>"` → `selects_client_param.json`
+  - `selects arrival date <days> days from today` → `selects_arrival_date_param_days_from_today.json`
 
-```json
-{
-  "stepFileName": "user_enters_username_param_and_password_param",
-  "gherkinStep": "User enters username \"admin\" and password \"Test@123\"",
-  "normalizedStep": "user_enters_username_param_and_password_param",
-  "stepType": "When",
-  "stepNumber": 1,
-  "status": "passed",
-  "actions": [
-    {
-      "actionNumber": 1,
-      "actionType": "TYPE",
-      "description": "Enter Username",
-      "element": {
-        "type": "input",
-        "id": "username",
-        "name": "username",
-        "selector": "#username",
-        "cssSelector": "input#username",
-        "xpath": "//input[@id='username']",
-        "text": null,
-        "placeholder": "Enter your username",
-        "dataTest": "user-login-field",
-        "ariaLabel": "Username Field",
-        "role": "textbox",
-        "title": null,
-        "alt": null,
-        "className": "input-field login-input",
-        "value": null,
-        "href": null,
-        "src": null,
-        "fingerprint": {
-          "attributes": {
-            "type": "text",
-            "role": "textbox",
-            "ariaLabel": "Username Field",
-            "classList": "input-field login-input"
-          },
-          "context": {
-            "nearbyText": "Username",
-            "parentTag": "div",
-            "heading": "Login Area"
-          }
-        }
-      },
-      "value": "___RUNTIME_PARAMETER___"
-    },
-    {
-      "actionNumber": 2,
-      "actionType": "TYPE",
-      "description": "Enter Password",
-      "element": {
-        "type": "input",
-        "id": "password",
-        "name": "password",
-        "selector": "#password",
-        "cssSelector": "input#password",
-        "xpath": "//input[@id='password']",
-        "text": null,
-        "placeholder": "Enter your password",
-        "dataTest": "user-pass-field",
-        "ariaLabel": "Password Field",
-        "role": "textbox",
-        "title": null,
-        "alt": null,
-        "className": "input-field login-input",
-        "value": null,
-        "href": null,
-        "src": null,
-        "fingerprint": {
-          "attributes": {
-            "type": "password",
-            "role": "textbox",
-            "ariaLabel": "Password Field",
-            "classList": "input-field login-input"
-          },
-          "context": {
-            "nearbyText": "Password",
-            "parentTag": "div",
-            "heading": "Login Area"
-          }
-        }
-      },
-      "value": "___RUNTIME_PARAMETER___"
-    }
-  ],
-  "metadata": {
-    "createdDate": "2026-01-11T11:32:00",
-    "totalActions": 2
-  }
-}
-```
+### 4.2 JSON Structure & 17 Mandatory Element Attributes
+- Every JSON file must contain an `actions` array.
+- Each action's `element` object must include all 17 attributes:
+  - `type`, `id`, `name`, `selector`, `cssSelector`, `xpath`, `text`, `placeholder`, `dataTest`, `ariaLabel`, `role`, `title`, `alt`, `className`, `value`, `href`, `src`
+- Use `null` for missing attributes, never empty strings.
+- Include a `fingerprint` object with `attributes` and `context` for self-healing.
 
-### 4.2 Attribute Capture Rules
+### 4.3 Action Types & Mapping
+- Supported action types include:  
+  `NAVIGATE`, `CLICK`, `CLICK_AND_SWITCH`, `CLOSE_WINDOW`, `DOUBLE_CLICK`, `RIGHT_CLICK`, `TYPE`, `CLEAR`, `SELECT`, `SELECT_DROPDOWN`, `SELECT_DATE`, `HOVER`, `CHECK`, `UNCHECK`, `PRESS_KEY`, `SWITCH_WINDOW`, `DRAG_AND_DROP`, `SCROLL`, `WAIT_STABLE`, `WAIT_FOR_RELOAD`, `WAIT_NAVIGATION`, `JS_EVALUATE`, `UPLOAD_FILE`, `HANDLE_DIALOG`, `VERIFY_TEXT`, `VERIFY_ELEMENT`, `VERIFY_ELEMENTS`, `GET_TEXT`, `SCREENSHOT`
+- Refer to ACTION_GALLERY.md for Gherkin-to-JSON mapping examples.
 
-| Attribute | Source | If Not Present |
-|-----------|--------|----------------|
-| `type` | `element.tagName` | `null` |
-| `id` | `element.id` | `null` |
-| `name` | `element.getAttribute('name')` | `null` |
-| `selector` | Playwright's best selector | Required |
-| `cssSelector` | Constructed CSS | `null` |
-| `xpath` | Relative XPath from nearest ID | `null` |
-| `text` | `element.textContent` | `null` |
-| `placeholder` | `element.placeholder` | `null` |
-| `dataTest` | `element.getAttribute('data-testid')` | `null` |
-| `ariaLabel` | `element.ariaLabel` | `null` |
-| `role` | `element.role` | `null` |
-| `title` | `element.title` | `null` |
-| `alt` | `element.alt` | `null` |
-| `className` | `element.className` | `null` |
-| `value` | `element.value` | `null` |
-| `href` | `element.href` | `null` |
-| `src` | `element.src` | `null` |
+### 4.4 Critical Action Selection Rules
+- Use `CLICK_AND_SWITCH` for links with `target="_blank"` or popups; otherwise use `CLICK`.
+- Always follow navigation or popup actions with `WAIT_STABLE`.
+- Use `WAIT_FOR_RELOAD` after form submissions or AJAX-triggered reloads.
 
-**Critical Rule**: NEVER use empty string `""`, always use `null` for missing attributes
+### 4.5 Dynamic Data Keywords
+- Use these in the `value` field for dynamic data:
+  - `___RUNTIME_PARAMETER___` (from Gherkin step)
+  - `RANDOM_FIRST_NAME`, `RANDOM_EMAIL`, `RANDOM_PHONE`
+  - `RANDOM_NUMERIC_5`, `RANDOM_ALPHABETIC_8`
+  - `VAR_*` for captured values
+
+### 4.6 JSON Creation & Maintenance Best Practices
+- Always check if the JSON file already exists before creating.
+- Capture all element data from a live browser session; never guess HTML structure.
+- For multi-intent steps, record each as a sequential action in the `actions` array.
+- Ensure all JSON files are stored in `src/test/resources/locatorRepository/`.
+
+### 4.7 Fallback Mechanism
+- If a normalized JSON file is not found, the framework falls back to traditional Java step definitions.
 
 ---
 
