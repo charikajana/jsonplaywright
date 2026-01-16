@@ -1,0 +1,48 @@
+{
+  "stepFileName": "clicks_on_search_button",
+  "gherkinStep": "clicks on search button",
+  "normalizedStep": "clicks_on_search_button",
+  "stepType": "And",
+  "stepNumber": 8,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLICK",
+      "description": "Click on Search button",
+      "element": {
+        "type": "input",
+        "id": "ctl00_btnSearch",
+        "name": "ctl00$btnSearch",
+        "selector": "#ctl00_btnSearch",
+        "cssSelector": "input#ctl00_btnSearch",
+        "xpath": "//input[@id='ctl00_btnSearch']",
+        "text": "Search",
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "button",
+        "title": null,
+        "alt": null,
+        "className": "btn btn-primary btn-oval w-50",
+        "value": "Search",
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "type": "submit", "role": "button" },
+          "context": { "nearbyText": "Advanced Options", "parentTag": "div", "heading": null }
+        }
+      }
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_STABLE",
+      "description": "Wait for search results to load"
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T17:30:00",
+    "totalActions": 2
+  }
+}

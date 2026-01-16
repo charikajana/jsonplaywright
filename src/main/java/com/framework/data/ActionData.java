@@ -20,6 +20,7 @@ public class ActionData {
     private Integer expectedCount;
     private String comparisonType; // EXACTLY or CONTAINS
     private String status;
+    private String dateFormat;  // Date format pattern for date input fields (e.g., "M/d/yyyy")
 
     
     // Getters and Setters
@@ -109,6 +110,14 @@ public class ActionData {
     
     public void setTargetElement(ElementLocators targetElement) {
         this.targetElement = targetElement;
+    }
+    
+    public String getDateFormat() {
+        return dateFormat;
+    }
+    
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
 }

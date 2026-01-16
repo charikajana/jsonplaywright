@@ -19,6 +19,9 @@ public class SmartWaitStrategy {
     private static final int MEDIUM_TIMEOUT = 7000;
     private static final int LONG_TIMEOUT = 15000;
     
+    // Explicit wait timeout - maximum wait for element visibility (120 seconds)
+    public static final int EXPLICIT_WAIT_TIMEOUT = 120000;
+    
     // Polling interval
     private static final int POLL_INTERVAL = 100;
     
@@ -45,6 +48,56 @@ public class SmartWaitStrategy {
             return true;
         } catch (Exception e) {
             logger.warn("[WAIT] Element not visible within {}ms", timeout);
+            return false;
+        }
+    }
+    
+    /**
+     * Explicit wait for element visibility with maximum timeout of 120 seconds.
+     * This is the default wait applied before every action on an element.
+     * 
+     * @param locator The Playwright locator
+     * @return true if element became visible within 120 seconds, false otherwise
+     */
+    public static boolean waitForElementVisible(Locator locator) {
+        try {
+            long startTime = System.currentTimeMillis();
+            
+            locator.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(EXPLICIT_WAIT_TIMEOUT));
+            
+            long duration = System.currentTimeMillis() - startTime;
+            logger.info("[EXPLICIT_WAIT] Element visible after {}ms (max: {}ms)", duration, EXPLICIT_WAIT_TIMEOUT);
+            
+            return true;
+        } catch (Exception e) {
+            logger.error("[EXPLICIT_WAIT] Element not visible within {}ms (120 seconds)", EXPLICIT_WAIT_TIMEOUT);
+            return false;
+        }
+    }
+    
+    /**
+     * Explicit wait for element visibility with custom timeout.
+     * 
+     * @param locator The Playwright locator
+     * @param timeoutMs Custom timeout in milliseconds
+     * @return true if element became visible, false otherwise
+     */
+    public static boolean waitForElementVisible(Locator locator, int timeoutMs) {
+        try {
+            long startTime = System.currentTimeMillis();
+            
+            locator.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(timeoutMs));
+            
+            long duration = System.currentTimeMillis() - startTime;
+            logger.info("[EXPLICIT_WAIT] Element visible after {}ms (max: {}ms)", duration, timeoutMs);
+            
+            return true;
+        } catch (Exception e) {
+            logger.error("[EXPLICIT_WAIT] Element not visible within {}ms", timeoutMs);
             return false;
         }
     }

@@ -1,0 +1,80 @@
+{
+  "stepFileName": "selects_arrival_date_param_days_from_today",
+  "gherkinStep": "selects arrival date <days> days from today",
+  "normalizedStep": "selects_arrival_date_param_days_from_today",
+  "stepType": "And",
+  "stepNumber": 7,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLEAR",
+      "description": "Clear the Arrival Date field first",
+      "element": {
+        "type": "input",
+        "id": "ctl00_txtArrivalDate",
+        "name": "ctl00$txtArrivalDate",
+        "selector": "#ctl00_txtArrivalDate",
+        "cssSelector": "input.txtArrivalDate",
+        "xpath": "//input[@id='ctl00_txtArrivalDate']",
+        "text": null,
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "textbox",
+        "title": null,
+        "alt": null,
+        "className": "form-control txtArrivalDate",
+        "value": null,
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "type": "text", "role": "textbox" },
+          "context": { "nearbyText": "Arrival Date", "parentTag": "div", "heading": null }
+        }
+      }
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "TYPE",
+      "description": "Enter arrival date (calculated from days parameter: e.g., 25 = 25 days from today)",
+      "element": {
+        "type": "input",
+        "id": "ctl00_txtArrivalDate",
+        "name": "ctl00$txtArrivalDate",
+        "selector": "#ctl00_txtArrivalDate",
+        "cssSelector": "input.txtArrivalDate",
+        "xpath": "//input[@id='ctl00_txtArrivalDate']",
+        "text": null,
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "textbox",
+        "title": null,
+        "alt": null,
+        "className": "form-control txtArrivalDate",
+        "value": null,
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "type": "text", "role": "textbox" },
+          "context": { "nearbyText": "Arrival Date", "parentTag": "div", "heading": null }
+        }
+      },
+      "value": "___RUNTIME_PARAMETER___",
+      "dateFormat": "M/d/yyyy"
+    },
+    {
+      "actionNumber": 3,
+      "actionType": "PRESS_KEY",
+      "description": "Press Escape to close date picker if open",
+      "value": "Escape"
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T17:30:00",
+    "totalActions": 3
+  }
+}

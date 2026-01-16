@@ -9,14 +9,14 @@
     {
       "actionNumber": 1,
       "actionType": "CLICK",
-      "description": "Click on Travel Policy link in sidebar",
+      "description": "Click on Travel Policy main link (not sub-links)",
       "element": {
         "type": "a",
         "id": null,
         "name": null,
-        "selector": "a[href*='TravelPolicy']",
-        "cssSelector": "a[href*='TravelPolicy']",
-        "xpath": "//a[contains(@href,'TravelPolicy')]",
+        "selector": "a[href='/TravelPolicyUpdate.aspx']",
+        "cssSelector": "a[href='/TravelPolicyUpdate.aspx']",
+        "xpath": "//a[@href='/TravelPolicyUpdate.aspx']",
         "text": "Travel Policy",
         "placeholder": null,
         "dataTest": null,
@@ -37,9 +37,8 @@
     },
     {
       "actionNumber": 2,
-      "actionType": "WAIT_FOR_RELOAD",
-      "description": "Wait for Travel Policy page to load",
-      "timeout": 30000
+      "actionType": "WAIT_STABLE",
+      "description": "Wait for Travel Policy page to fully load (new URL navigation)"
     }
   ],
   "metadata": {

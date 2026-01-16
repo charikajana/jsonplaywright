@@ -7,9 +7,6 @@ import com.microsoft.playwright.options.AriaRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Self-Healing Engine - The "Medical Kit" for broken tests.
  * This class is triggered only when standard locators fail.

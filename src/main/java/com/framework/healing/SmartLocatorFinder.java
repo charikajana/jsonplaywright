@@ -83,6 +83,13 @@ public class SmartLocatorFinder {
             com.framework.data.StepRepository.populateLiveAttributes(element, locators);
         }
         
+        // Step 4: Explicit wait for element visibility (max 120 seconds) before returning
+        if (element != null) {
+            if (!com.framework.strategy.SmartWaitStrategy.waitForElementVisible(element)) {
+                logger.warn("[FINDER] Element found but not visible within 120 seconds: {}", locators.getBestLocator());
+            }
+        }
+        
         return element;
     }
 

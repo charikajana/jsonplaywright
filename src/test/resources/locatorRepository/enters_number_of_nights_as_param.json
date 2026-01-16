@@ -1,0 +1,73 @@
+{
+  "stepFileName": "enters_number_of_nights_as_param",
+  "gherkinStep": "enters number of nights as \"<nights>\"",
+  "normalizedStep": "enters_number_of_nights_as_param",
+  "stepType": "And",
+  "stepNumber": 4,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLEAR",
+      "description": "Clear the Nights field first",
+      "element": {
+        "type": "input",
+        "id": "ctl00_txtNights",
+        "name": "ctl00$txtNights",
+        "selector": "#ctl00_txtNights",
+        "cssSelector": "input.txtNights",
+        "xpath": "//input[@id='ctl00_txtNights']",
+        "text": null,
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "textbox",
+        "title": null,
+        "alt": null,
+        "className": "form-control txtNights",
+        "value": null,
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "type": "text", "role": "textbox" },
+          "context": { "nearbyText": "Nights", "parentTag": "div", "heading": null }
+        }
+      }
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "TYPE",
+      "description": "Enter number of nights",
+      "element": {
+        "type": "input",
+        "id": "ctl00_txtNights",
+        "name": "ctl00$txtNights",
+        "selector": "#ctl00_txtNights",
+        "cssSelector": "input.txtNights",
+        "xpath": "//input[@id='ctl00_txtNights']",
+        "text": null,
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "textbox",
+        "title": null,
+        "alt": null,
+        "className": "form-control txtNights",
+        "value": null,
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "type": "text", "role": "textbox" },
+          "context": { "nearbyText": "Nights", "parentTag": "div", "heading": null }
+        }
+      },
+      "value": "___RUNTIME_PARAMETER___"
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T17:30:00",
+    "totalActions": 2
+  }
+}

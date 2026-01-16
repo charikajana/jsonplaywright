@@ -101,8 +101,19 @@ public class InteractionHandler {
         String rawValue = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
         if (rawValue == null) rawValue = action.getValue();
         
-        // Resolve random keywords
-        String value = com.framework.utils.RandomDataResolver.resolve(rawValue);
+        // Check if this is a date field - if dateFormat is specified, use DateResolver
+        String dateFormat = action.getDateFormat();
+        String value;
+        boolean isDateField = (dateFormat != null && !dateFormat.isEmpty());
+        
+        if (isDateField) {
+            // Resolve date using DateResolver (supports "25" as 25 days from today)
+            value = DateResolver.resolveDate(rawValue, dateFormat);
+            logger.debug("[DATE] Resolved '{}' to '{}' using format '{}'", rawValue, value, dateFormat);
+        } else {
+            // Resolve random keywords for non-date fields
+            value = com.framework.utils.RandomDataResolver.resolve(rawValue);
+        }
         
         try {
             Locator element = SmartLocatorFinder.findElement(page, locators);
@@ -116,7 +127,27 @@ public class InteractionHandler {
                 logger.warn("[WARN] Element not enabled, attempting type anyway");
             }
             
-            element.fill(value);
+            // Use robust typing for date fields (they often have date pickers that interfere with fill())
+            if (isDateField) {
+                // Focus and clear
+                element.focus();
+                element.fill("");
+                
+                // If still not empty (masked inputs), try select all and delete
+                String currentVal = element.inputValue();
+                if (currentVal != null && !currentVal.isEmpty()) {
+                    element.click();
+                    page.keyboard().press("Control+A");
+                    page.keyboard().press("Backspace");
+                }
+                
+                // Type character by character with slight delay for date pickers
+                element.type(value, new Locator.TypeOptions().setDelay(30));
+            } else {
+                // Standard fill for non-date fields
+                element.fill(value);
+            }
+            
             String successfulLocator = LocatorStrategy.getSuccessfulSelector(page, locators);
             logger.debug("[OK] Typed '{}' into: {}", value, successfulLocator);
             return true;
@@ -212,8 +243,8 @@ public class InteractionHandler {
         if (dateInput == null) dateInput = action.getValue();
         
         // Resolve date using our new utility
-        // Defaulting to dd-MM-yyyy but could be parameterized in JSON if needed
-        String resolvedDate = DateResolver.resolveDate(dateInput, "dd-MM-yyyy");
+        // Use M/d/yyyy format for HotelBooker compatibility (can be extended to read from JSON if needed)
+        String resolvedDate = DateResolver.resolveDate(dateInput, "M/d/yyyy");
         
         try {
             Locator element = SmartLocatorFinder.findElement(page, locators);
@@ -296,8 +327,17 @@ public class InteractionHandler {
     }
 
     public static boolean executePressKey(Page page, ActionData action, String originalGherkinStep) {
-        String rawKey = ParameterExtractor.extractFirstParameter(originalGherkinStep);
-        if (rawKey == null) rawKey = action.getValue();
+        // For PRESS_KEY, use the action's value directly unless it's a runtime parameter placeholder
+        String rawKey = action.getValue();
+        if (rawKey == null || rawKey.isEmpty() || "___RUNTIME_PARAMETER___".equals(rawKey)) {
+            // Only extract from step if action value is not specified
+            rawKey = ParameterExtractor.extractFirstParameter(originalGherkinStep);
+        }
+        
+        if (rawKey == null || rawKey.isEmpty()) {
+            logger.error("[ERROR] No key specified for PRESS_KEY action");
+            return false;
+        }
         
         String key = com.framework.utils.RandomDataResolver.resolve(rawKey);
         try {

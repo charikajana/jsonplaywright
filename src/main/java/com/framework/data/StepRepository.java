@@ -255,11 +255,18 @@ public class StepRepository {
     
     /**
      * Normalize step text for comparison and hashing
+     * Handles:
+     * - Quoted parameters: "value"
+     * - Angle-bracket parameters: <param>
+     * - Standalone numbers (from Scenario Outline substitution): 25 -> _param_
      */
     private static String normalizeStepText(String stepText) {
         return stepText
             .replaceAll("^(Given|When|Then|And|But)\\s+", "")
-            .replaceAll("\"[^\"]*\"", "_param_") // Mask quoted values directly
+            .replaceAll("\"[^\"]*\"", "_param_")     // Mask quoted values: "value"
+            .replaceAll("<[^>]+>", "_param_")        // Mask angle-bracket params: <param>
+            .replaceAll("\\b\\d+\\b", "_param_")     // Mask standalone numbers: 25
+            .replaceAll("(_param_\\s*)+", "_param_ ") // Collapse consecutive params
             .trim()
             .toLowerCase();
     }

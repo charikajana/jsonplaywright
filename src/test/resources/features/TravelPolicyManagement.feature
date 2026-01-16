@@ -5,7 +5,7 @@ Feature: HotelBooker Travel Policy Management
   So that I can control booking policies for clients
 
   @UpdateTravelPolicy
-  Scenario: Update Travel Policy for Test QA Client
+  Scenario Outline: Update Travel Policy for Test QA Client
     Given Open Browser and Navigate to HotelBooker
     When user enters username and password
     And user clicks login button
@@ -20,3 +20,16 @@ Feature: HotelBooker Travel Policy Management
     And click on update policy button
     Then Verify "Update Successful!" message is displayed
     And Close the current window and switch to main window
+    When user selects country "<country>"
+    And enters location "<location>" from suggestion
+    And selects distance "<distance>"
+    And enters number of nights as "<nights>"
+    And selects number of rooms as "<rooms>"
+    And selects number of guests as "<guests>"
+    And selects arrival date "<days>" days from today
+    And clicks on search button
+
+
+     Examples:
+      | country | location   | hotelName | distance | days | nights | rooms | guests | provider    | refundable |  payment_method | cancel_method    | email_recipients    |
+      | USA     | Dallas     | Holiday   | 20 Miles | 25   | 1      | 1     | 1      | Sabre       | No         |  Credit Card    | Cancel by Room   | Booker,Agent,Client |

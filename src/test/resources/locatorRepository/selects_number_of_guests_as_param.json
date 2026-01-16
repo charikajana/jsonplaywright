@@ -1,0 +1,44 @@
+{
+  "stepFileName": "selects_number_of_guests_as_param",
+  "gherkinStep": "selects number of guests as \"<guests>\"",
+  "normalizedStep": "selects_number_of_guests_as_param",
+  "stepType": "And",
+  "stepNumber": 6,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "SELECT",
+      "description": "Select number of guests from Guests/Occupancy dropdown",
+      "element": {
+        "type": "select",
+        "id": "ctl00_lstOccupancy",
+        "name": "ctl00$lstOccupancy",
+        "selector": "#ctl00_lstOccupancy",
+        "cssSelector": "select.lstOccupancy",
+        "xpath": "//select[@id='ctl00_lstOccupancy']",
+        "text": null,
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "combobox",
+        "title": null,
+        "alt": null,
+        "className": "form-select lstOccupancy",
+        "value": null,
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "type": "select", "role": "combobox" },
+          "context": { "nearbyText": "Guests", "parentTag": "div", "heading": null }
+        }
+      },
+      "value": "___RUNTIME_PARAMETER___"
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T17:30:00",
+    "totalActions": 1
+  }
+}

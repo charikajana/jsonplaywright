@@ -1,0 +1,112 @@
+{
+  "stepFileName" : "enters_location_param_from_suggestion",
+  "gherkinStep" : "enters location \"<location>\" from suggestion",
+  "normalizedStep" : "enters location _param_ from suggestion",
+  "stepType" : "And",
+  "stepNumber" : 2,
+  "status" : "passed",
+  "actions" : [ {
+    "actionNumber" : 1,
+    "actionType" : "TYPE",
+    "description" : "Enter location in Location field",
+    "element" : {
+      "type" : "text",
+      "id" : "ctl00_txtLocation",
+      "name" : "ctl00$txtLocation",
+      "selector" : "#ctl00_txtLocation",
+      "cssSelector" : "input.txtLocation",
+      "xpath" : "//input[@id='ctl00_txtLocation']",
+      "text" : null,
+      "placeholder" : "Place, Postcode, Airport, Train Station...",
+      "dataTest" : null,
+      "ariaLabel" : null,
+      "role" : null,
+      "title" : null,
+      "alt" : null,
+      "className" : "form-control txtLocation",
+      "value" : null,
+      "href" : null,
+      "src" : null,
+      "coordinates" : null,
+      "fingerprint" : {
+        "attributes" : {
+          "type" : "text",
+          "ariaLabel" : null,
+          "classList" : null,
+          "role" : "textbox",
+          "ariaExpanded" : null,
+          "ariaHaspopup" : null,
+          "ariaControls" : null,
+          "ariaSelected" : null,
+          "ariaChecked" : null,
+          "ariaDisabled" : null,
+          "dataToggle" : null,
+          "dataTarget" : null
+        },
+        "context" : {
+          "parentTag" : "div",
+          "parentClass" : null,
+          "nearbyText" : "Location",
+          "heading" : null
+        }
+      },
+      "healed" : false
+    },
+    "value" : "___RUNTIME_PARAMETER___"
+  }, {
+    "actionNumber" : 2,
+    "actionType" : "WAIT_STABLE",
+    "description" : "Wait for autocomplete suggestions to appear"
+  }, {
+    "actionNumber" : 3,
+    "actionType" : "CLICK",
+    "description" : "Click on first suggestion from autocomplete",
+    "element" : {
+      "type" : "text",
+      "id" : "ctl00_txtLocation",
+      "name" : "ctl00$txtLocation",
+      "selector" : "internal:label=\"Location\"i",
+      "cssSelector" : ".ui-autocomplete li:first-child",
+      "xpath" : "//input[@id='ctl00_txtLocation']",
+      "text" : null,
+      "placeholder" : "Place, Postcode, Airport, Train Station...",
+      "dataTest" : null,
+      "ariaLabel" : null,
+      "role" : null,
+      "title" : null,
+      "alt" : null,
+      "className" : "form-control txtLocation",
+      "value" : "Dallas",
+      "href" : null,
+      "src" : null,
+      "coordinates" : null,
+      "fingerprint" : {
+        "attributes" : {
+          "type" : null,
+          "ariaLabel" : null,
+          "classList" : null,
+          "role" : "option",
+          "ariaExpanded" : null,
+          "ariaHaspopup" : null,
+          "ariaControls" : null,
+          "ariaSelected" : null,
+          "ariaChecked" : null,
+          "ariaDisabled" : null,
+          "dataToggle" : null,
+          "dataTarget" : null
+        },
+        "context" : {
+          "parentTag" : "ul",
+          "parentClass" : null,
+          "nearbyText" : "Location",
+          "heading" : null
+        }
+      },
+      "healed" : true
+    }
+  } ],
+  "metadata" : {
+    "createdDate" : "2026-01-16T19:23:56.778227300",
+    "totalActions" : 3
+  }
+}
