@@ -40,9 +40,6 @@ public class EnvironmentConfig {
             logger.info("Loaded environment config: {}", configFile);
         } catch (IOException e) {
             logger.warn("Could not load config file: {} - Using defaults", configFile);
-            // Load default properties
-            props.setProperty("base.url", "https://www.saucedemo.com");
-            props.setProperty("api.url", "https://api.saucedemo.com");
             envProperties.put(currentEnvironment, props);
         }
     }

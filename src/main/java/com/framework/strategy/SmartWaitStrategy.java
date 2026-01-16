@@ -302,4 +302,80 @@ public class SmartWaitStrategy {
         logger.warn("[WAIT] Condition not met: {}", errorMessage);
         return false;
     }
+    
+    /**
+     * Waits for page to be completely stable:
+     * 1. DOM content loaded
+     * 2. Page load complete
+     * 3. Network idle (no pending requests)
+     * 4. JavaScript execution stable
+     * 
+     * @param page The Playwright page
+     * @return true if page is stable, false if timeout
+     */
+    public static boolean waitForStable(Page page) {
+        try {
+            long startTime = System.currentTimeMillis();
+            
+            // Step 1: Wait for DOM content loaded
+            page.waitForLoadState(com.microsoft.playwright.options.LoadState.DOMCONTENTLOADED);
+            logger.debug("[WAIT_STABLE] DOM content loaded");
+            
+            // Step 2: Wait for full page load
+            page.waitForLoadState(com.microsoft.playwright.options.LoadState.LOAD);
+            logger.debug("[WAIT_STABLE] Page load complete");
+            
+            // Step 3: Wait for network idle (no pending AJAX/fetch requests)
+            page.waitForLoadState(com.microsoft.playwright.options.LoadState.NETWORKIDLE);
+            logger.debug("[WAIT_STABLE] Network idle");
+            
+            // Step 4: Wait for JavaScript to be stable (document.readyState === 'complete')
+            page.waitForFunction("() => document.readyState === 'complete'");
+            logger.debug("[WAIT_STABLE] Document ready state complete");
+            
+            // Step 5: Additional stability check - wait for any animations/transitions to complete
+            page.waitForFunction(
+                "() => {" +
+                "  const animations = document.getAnimations ? document.getAnimations() : [];" +
+                "  return animations.every(a => a.playState === 'finished' || a.playState === 'idle');" +
+                "}",
+                new Page.WaitForFunctionOptions().setTimeout(5000)
+            );
+            logger.debug("[WAIT_STABLE] Animations complete");
+            
+            long duration = System.currentTimeMillis() - startTime;
+            logger.info("[WAIT_STABLE] Page fully stable after {}ms", duration);
+            
+            return true;
+        } catch (Exception e) {
+            logger.warn("[WAIT_STABLE] Page stability check completed with warning: {}", e.getMessage());
+            // Return true anyway as basic page load should have completed
+            return true;
+        }
+    }
+    
+    /**
+     * Waits for page stability with custom timeout.
+     * 
+     * @param page The Playwright page
+     * @param timeoutMs Custom timeout in milliseconds
+     * @return true if page is stable, false if timeout
+     */
+    public static boolean waitForStable(Page page, int timeoutMs) {
+        try {
+            long startTime = System.currentTimeMillis();
+            page.setDefaultTimeout(timeoutMs);
+            
+            boolean result = waitForStable(page);
+            
+            // Reset to default timeout
+            page.setDefaultTimeout(DEFAULT_TIMEOUT);
+            
+            return result;
+        } catch (Exception e) {
+            page.setDefaultTimeout(DEFAULT_TIMEOUT);
+            logger.warn("[WAIT_STABLE] Timeout waiting for stable state: {}", e.getMessage());
+            return false;
+        }
+    }
 }

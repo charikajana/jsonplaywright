@@ -1,0 +1,20 @@
+{
+  "stepFileName": "close_the_current_window_and_switch_to_main_window",
+  "gherkinStep": "Close the current window and switch to main window",
+  "normalizedStep": "close_the_current_window_and_switch_to_main_window",
+  "stepType": "And",
+  "stepNumber": 14,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLOSE_WINDOW",
+      "description": "Close current window and switch to main window",
+      "value": "0"
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T10:00:00",
+    "totalActions": 1
+  }
+}

@@ -181,6 +181,23 @@ public class JsonEnhancedExecutor {
                 case "SCREENSHOT":
                     return NavigationHandler.executeScreenshot(page, action);
                     
+                case "WAIT_STABLE":
+                    return NavigationHandler.executeWaitStable(page, action);
+                    
+                case "WAIT_FOR_RELOAD":
+                    return NavigationHandler.executeWaitForReload(page, action);
+                    
+                case "CLICK_AND_SWITCH":
+                    boolean success = InteractionHandler.executeClickAndSwitch(page, action);
+                    if (success) {
+                        // Refresh the page reference after switching to new window
+                        page = playwrightManager.getPage();
+                    }
+                    return success;
+                    
+                case "CLOSE_WINDOW":
+                    return NavigationHandler.executeCloseWindow(page, action);
+                    
                 default:
                     logger.warn("[WARNING] Unknown action type: {}", action.getActionType());
                     return true; 

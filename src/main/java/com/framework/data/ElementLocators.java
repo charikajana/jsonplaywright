@@ -229,6 +229,7 @@ public class ElementLocators {
     public void setHealed(boolean healed) { this.healed = healed; }
 
     // Nested classes for Self-Healing
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class FingerprintData {
         private Attributes attributes;
         private Context context;
@@ -240,11 +241,20 @@ public class ElementLocators {
         public void setContext(Context context) { this.context = context; }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Attributes {
         private String type;
         private String ariaLabel;
         private String classList;
         private String role;
+        private String ariaExpanded;
+        private String ariaHaspopup;
+        private String ariaControls;
+        private String ariaSelected;
+        private String ariaChecked;
+        private String ariaDisabled;
+        private String dataToggle;
+        private String dataTarget;
 
         public String getType() { return type; }
         public void setType(String type) { this.type = type; }
@@ -254,8 +264,25 @@ public class ElementLocators {
         public void setClassList(String classList) { this.classList = classList; }
         public String getRole() { return role; }
         public void setRole(String role) { this.role = role; }
+        public String getAriaExpanded() { return ariaExpanded; }
+        public void setAriaExpanded(String ariaExpanded) { this.ariaExpanded = ariaExpanded; }
+        public String getAriaHaspopup() { return ariaHaspopup; }
+        public void setAriaHaspopup(String ariaHaspopup) { this.ariaHaspopup = ariaHaspopup; }
+        public String getAriaControls() { return ariaControls; }
+        public void setAriaControls(String ariaControls) { this.ariaControls = ariaControls; }
+        public String getAriaSelected() { return ariaSelected; }
+        public void setAriaSelected(String ariaSelected) { this.ariaSelected = ariaSelected; }
+        public String getAriaChecked() { return ariaChecked; }
+        public void setAriaChecked(String ariaChecked) { this.ariaChecked = ariaChecked; }
+        public String getAriaDisabled() { return ariaDisabled; }
+        public void setAriaDisabled(String ariaDisabled) { this.ariaDisabled = ariaDisabled; }
+        public String getDataToggle() { return dataToggle; }
+        public void setDataToggle(String dataToggle) { this.dataToggle = dataToggle; }
+        public String getDataTarget() { return dataTarget; }
+        public void setDataTarget(String dataTarget) { this.dataTarget = dataTarget; }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Context {
         private String parentTag;
         private String parentClass;

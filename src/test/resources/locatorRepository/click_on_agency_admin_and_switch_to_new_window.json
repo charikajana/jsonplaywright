@@ -1,0 +1,48 @@
+{
+  "stepFileName": "click_on_agency_admin_and_switch_to_new_window",
+  "gherkinStep": "click on Agency Admin and switch to new window",
+  "normalizedStep": "click_on_agency_admin_and_switch_to_new_window",
+  "stepType": "And",
+  "stepNumber": 7,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLICK_AND_SWITCH",
+      "description": "Click on Agency Admin link and switch to new window",
+      "element": {
+        "type": "a",
+        "id": null,
+        "name": null,
+        "selector": "a:has-text('Agency Admin')",
+        "cssSelector": "ul.dropdown-menu a[href*='SSO.aspx']",
+        "xpath": "//a[contains(text(),'Agency Admin')]",
+        "text": "Agency Admin",
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "link",
+        "title": null,
+        "alt": null,
+        "className": null,
+        "value": null,
+        "href": "SSO.aspx?Ref=admin",
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "role": "link" },
+          "context": { "nearbyText": "Resend Confirmations", "parentTag": "li", "heading": "Tools" }
+        }
+      }
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_STABLE",
+      "description": "Wait for new window to load"
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T10:00:00",
+    "totalActions": 2
+  }
+}

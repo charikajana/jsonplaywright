@@ -1,0 +1,43 @@
+{
+  "stepFileName": "click_on_tools",
+  "gherkinStep": "click on Tools",
+  "normalizedStep": "click_on_tools",
+  "stepType": "And",
+  "stepNumber": 6,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLICK",
+      "description": "Click on Tools dropdown button",
+      "element": {
+        "type": "button",
+        "id": null,
+        "name": null,
+        "selector": "button:has-text('Tools')",
+        "cssSelector": "nav button.dropdown-toggle",
+        "xpath": "//button[contains(text(),'Tools')]",
+        "text": "Tools",
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "button",
+        "title": null,
+        "alt": null,
+        "className": "dropdown-toggle",
+        "value": null,
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "role": "button", "aria-expanded": "false" },
+          "context": { "nearbyText": "Test QA Client", "parentTag": "li", "heading": null }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T10:00:00",
+    "totalActions": 1
+  }
+}

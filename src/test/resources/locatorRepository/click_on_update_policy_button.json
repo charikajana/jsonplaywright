@@ -1,0 +1,48 @@
+{
+  "stepFileName": "click_on_update_policy_button",
+  "gherkinStep": "click on update policy button",
+  "normalizedStep": "click_on_update_policy_button",
+  "stepType": "And",
+  "stepNumber": 12,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLICK",
+      "description": "Click Update Policy button",
+      "element": {
+        "type": "button",
+        "id": "ctl00_cphMainContent_btnUpdate",
+        "name": "ctl00$cphMainContent$btnUpdate",
+        "selector": "button:has-text('Update Policy')",
+        "cssSelector": "button#ctl00_cphMainContent_btnUpdate",
+        "xpath": "//button[contains(text(),'Update Policy')]",
+        "text": "Update Policy",
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "button",
+        "title": null,
+        "alt": null,
+        "className": null,
+        "value": "Update Policy",
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "type": "submit", "role": "button" },
+          "context": { "nearbyText": "Unknown Travel Policy Message", "parentTag": "td", "heading": "Travel Policy" }
+        }
+      }
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_STABLE",
+      "description": "Wait for update to complete"
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T10:00:00",
+    "totalActions": 2
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "stepFileName": "select_param_from_drop_down",
+  "gherkinStep": "select \"<clientName>\" from drop down",
+  "normalizedStep": "select_param_from_drop_down",
+  "stepType": "And",
+  "stepNumber": 9,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "SELECT",
+      "description": "Select client from dropdown",
+      "element": {
+        "type": "select",
+        "id": "ctl00_ClientDropdownlist",
+        "name": "ctl00$ClientDropdownlist",
+        "selector": "#ctl00_ClientDropdownlist",
+        "cssSelector": "select#ctl00_ClientDropdownlist",
+        "xpath": "//select[@id='ctl00_ClientDropdownlist']",
+        "text": null,
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "combobox",
+        "title": null,
+        "alt": null,
+        "className": null,
+        "value": null,
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "role": "combobox" },
+          "context": { "nearbyText": "Select", "parentTag": "li", "heading": "Agency Admin" }
+        }
+      },
+      "value": "___RUNTIME_PARAMETER___"
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_FOR_RELOAD",
+      "description": "Wait for page to reload after client selection",
+      "timeout": 30000
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T10:00:00",
+    "totalActions": 2
+  }
+}

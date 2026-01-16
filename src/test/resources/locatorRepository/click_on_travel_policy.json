@@ -1,0 +1,49 @@
+{
+  "stepFileName": "click_on_travel_policy",
+  "gherkinStep": "click on Travel Policy",
+  "normalizedStep": "click_on_travel_policy",
+  "stepType": "And",
+  "stepNumber": 10,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLICK",
+      "description": "Click on Travel Policy link in sidebar",
+      "element": {
+        "type": "a",
+        "id": null,
+        "name": null,
+        "selector": "a[href*='TravelPolicy']",
+        "cssSelector": "a[href*='TravelPolicy']",
+        "xpath": "//a[contains(@href,'TravelPolicy')]",
+        "text": "Travel Policy",
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "link",
+        "title": null,
+        "alt": null,
+        "className": null,
+        "value": null,
+        "href": "/TravelPolicyUpdate.aspx",
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "role": "link" },
+          "context": { "nearbyText": "Employee Management", "parentTag": "div", "heading": "Travel Policy" }
+        }
+      }
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_FOR_RELOAD",
+      "description": "Wait for Travel Policy page to load",
+      "timeout": 30000
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T10:00:00",
+    "totalActions": 2
+  }
+}

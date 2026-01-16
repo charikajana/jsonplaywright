@@ -1,28 +1,34 @@
 package com.framework.steps;
 
+import com.framework.pages.AgencyAdminLoginPage;
+import com.framework.pages.HotelBookerLoginPage;
 import com.framework.playwright.PlaywrightActions;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
- * Example of traditional coded step definitions, now extending PlaywrightActions.
- * This allows direct access to the 'page()' method and other utilities.
+ * Traditional step definitions using Page Object Model (POM) pattern.
+ * This class delegates actions to Page Object classes for better maintainability.
  */
 public class TraditionalSteps extends PlaywrightActions {
 
-    @Given("Open custom URL {string}")
-    public void openCustomUrl(String url) {
-        // We can now use the 'navigate' method from PlaywrightActions or direct 'page()'
-        navigate(url);
+    // Page Objects
+    private final HotelBookerLoginPage hotelBookerLoginPage = new HotelBookerLoginPage();
+    private final AgencyAdminLoginPage agencyAdminLoginPage = new AgencyAdminLoginPage();
+
+    @Given("Open Browser and Navigate to HotelBooker")
+    public void openBrowserAndNavigateToHotelBooker() {
+        hotelBookerLoginPage.navigateToHotelBooker();
     }
 
-    @Then("Verify page title contains {string}")
-    public void verifyTitle(String expectedTitle) {
-        String actualTitle = page().title();
-        logger.info("[TRADITIONAL] Verifying title contains: {}", expectedTitle);
-        
-        if (!actualTitle.contains(expectedTitle)) {
-            throw new AssertionError("Expected title to contain '" + expectedTitle + "' but was '" + actualTitle + "'");
-        }
+    @When("user enters username and password")
+    public void userEntersUsernameAndPassword() {
+        hotelBookerLoginPage.enterCredentialsFromEnv();
     }
+
+    @When("Enter username and password click on Login button")
+    public void enterUsernameAndPasswordClickOnLoginButtonAgencyAdmin() {
+        agencyAdminLoginPage.loginWithEnvCredentials();
+    }
+
 }

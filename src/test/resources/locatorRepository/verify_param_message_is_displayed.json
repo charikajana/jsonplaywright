@@ -1,0 +1,45 @@
+{
+  "stepFileName": "verify_param_message_is_displayed",
+  "gherkinStep": "Verify \"<message>\" message is displayed",
+  "normalizedStep": "verify_param_message_is_displayed",
+  "stepType": "Then",
+  "stepNumber": 13,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "VERIFY_TEXT",
+      "description": "Verify success message is displayed",
+      "element": {
+        "type": "div",
+        "id": null,
+        "name": null,
+        "selector": "div.success-message, div:has-text('Update Successful!')",
+        "cssSelector": "div.panel-body div",
+        "xpath": "//div[contains(text(),'Update Successful!')]",
+        "text": "Update Successful!",
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": null,
+        "title": null,
+        "alt": null,
+        "className": null,
+        "value": null,
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "role": null },
+          "context": { "nearbyText": "Update Policy", "parentTag": "div", "heading": "Travel Policy" }
+        }
+      },
+      "value": "___RUNTIME_PARAMETER___",
+      "comparisonType": "CONTAINS"
+    }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T10:00:00",
+    "totalActions": 1
+  }
+}

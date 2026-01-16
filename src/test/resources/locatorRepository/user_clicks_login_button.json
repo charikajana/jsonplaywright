@@ -1,49 +1,48 @@
 {
-    "stepFileName": "user_clicks_login_button",
-    "gherkinStep": "And user clicks login button",
-    "normalizedStep": "user_clicks_login_button",
-    "stepType": "And",
-    "stepNumber": 3,
-    "status": "passed",
-    "actions": [
-        {
-            "actionNumber": 1,
-            "actionType": "CLICK",
-            "description": "Click Login Button",
-            "element": {
-                "type": "input",
-                "id": "ctl00_cphMainContent_btnLogin",
-                "name": "ctl00$cphMainContent$btnLogin",
-                "selector": "#ctl00_cphMainContent_btnLogin",
-                "cssSelector": "input#ctl00_cphMainContent_btnLogin",
-                "xpath": "//*[@id=\"ctl00_cphMainContent_btnLogin\"]",
-                "text": "Login",
-                "placeholder": null,
-                "dataTest": null,
-                "ariaLabel": null,
-                "role": "button",
-                "title": null,
-                "alt": null,
-                "className": "btn btn-lg btn-primary btn-oval col-12",
-                "value": "Login",
-                "href": null,
-                "src": null,
-                "fingerprint": {
-                    "attributes": {
-                        "type": "submit",
-                        "role": null,
-                        "classList": "btn btn-lg btn-primary btn-oval col-12"
-                    },
-                    "context": {
-                        "nearbyText": "",
-                        "parentTag": "div",
-                        "heading": "Forgotten Password?"
-                    }
-                }
-            }
+  "stepFileName": "user_clicks_login_button",
+  "gherkinStep": "user clicks login button",
+  "normalizedStep": "user_clicks_login_button",
+  "stepType": "And",
+  "stepNumber": 3,
+  "status": "passed",
+  "actions": [
+    {
+      "actionNumber": 1,
+      "actionType": "CLICK",
+      "description": "Click Login Button",
+      "element": {
+        "type": "input",
+        "id": "ctl00_cphMainContent_btnLogin",
+        "name": "ctl00$cphMainContent$btnLogin",
+        "selector": "#ctl00_cphMainContent_btnLogin",
+        "cssSelector": "input#ctl00_cphMainContent_btnLogin",
+        "xpath": "//input[@id='ctl00_cphMainContent_btnLogin']",
+        "text": "Login",
+        "placeholder": null,
+        "dataTest": null,
+        "ariaLabel": null,
+        "role": "button",
+        "title": null,
+        "alt": null,
+        "className": "btn btn-lg btn-primary btn-oval col-12",
+        "value": "Login",
+        "href": null,
+        "src": null,
+        "coordinates": null,
+        "fingerprint": {
+          "attributes": { "type": "submit", "role": "button" },
+          "context": { "nearbyText": "Forgotten Password?", "parentTag": "div", "heading": "Login" }
         }
-    ],
-    "metadata": {
-        "totalActions": 1
+      }
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_STABLE",
+      "description": "Wait for page to stabilize after login"
     }
+  ],
+  "metadata": {
+    "createdDate": "2026-01-16T10:00:00",
+    "totalActions": 2
+  }
 }

@@ -15,8 +15,8 @@ import java.util.Collections;
 
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = "com.framework.cucumber",
-        tags = "@TestOne",
+        glue = {"com.framework.cucumber"},
+        tags = "@UpdateTravelPolicy",
         plugin = {
                 "pretty",
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
