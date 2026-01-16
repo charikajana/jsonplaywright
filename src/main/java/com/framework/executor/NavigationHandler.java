@@ -26,8 +26,10 @@ public class NavigationHandler {
     private static final Logger logger = LoggerFactory.getLogger(NavigationHandler.class);
 
     public static boolean executeNavigate(Page page, ActionData action, String originalGherkinStep) {
-        String url = ParameterExtractor.extractFirstParameter(originalGherkinStep);
-        if (url == null) url = action.getUrl();
+        String rawUrl = ParameterExtractor.extractFirstParameter(originalGherkinStep);
+        if (rawUrl == null) rawUrl = action.getUrl();
+        
+        String url = com.framework.utils.RandomDataResolver.resolve(rawUrl);
         
         if (url == null) {
             logger.error("[ERROR] No URL for navigation");

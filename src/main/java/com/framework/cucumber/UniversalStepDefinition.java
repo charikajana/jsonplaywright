@@ -41,6 +41,7 @@ public class UniversalStepDefinition {
     
     @Before
     public void setUp(Scenario scenario) {
+        com.framework.utils.RandomDataResolver.clearCache();
         scenarioThreadLocal.set(scenario);
         logger.info("[INFO] [Thread: {}] Scenario starting: {}", 
             Thread.currentThread().getName(), scenario.getName());

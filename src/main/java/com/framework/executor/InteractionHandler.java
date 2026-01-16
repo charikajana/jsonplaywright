@@ -98,8 +98,11 @@ public class InteractionHandler {
         }
         
         // Extract parameter at the correct index based on action number
-        String value = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
-        if (value == null) value = action.getValue();
+        String rawValue = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
+        if (rawValue == null) rawValue = action.getValue();
+        
+        // Resolve random keywords
+        String value = com.framework.utils.RandomDataResolver.resolve(rawValue);
         
         try {
             Locator element = SmartLocatorFinder.findElement(page, locators);
@@ -179,8 +182,11 @@ public class InteractionHandler {
     public static boolean executeSelectDropdown(Page page, ActionData action, String originalGherkinStep, int actionIndex) {
         ElementLocators locators = action.getElement();
         if (locators == null) return false;
-        String val = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
-        if (val == null) val = action.getValue();
+        String rawVal = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
+        if (rawVal == null) rawVal = action.getValue();
+        
+        // Resolve random keywords
+        String val = com.framework.utils.RandomDataResolver.resolve(rawVal);
         try {
             Locator element = SmartLocatorFinder.findElement(page, locators);
             if (element == null) return false;
@@ -290,14 +296,45 @@ public class InteractionHandler {
     }
 
     public static boolean executePressKey(Page page, ActionData action, String originalGherkinStep) {
-        String key = ParameterExtractor.extractFirstParameter(originalGherkinStep);
-        if (key == null) key = action.getValue();
+        String rawKey = ParameterExtractor.extractFirstParameter(originalGherkinStep);
+        if (rawKey == null) rawKey = action.getValue();
+        
+        String key = com.framework.utils.RandomDataResolver.resolve(rawKey);
         try {
             page.keyboard().press(key);
             logger.debug("[OK] Pressed key: {}", key);
             return true;
         } catch (Exception e) {
             logger.error("[ERROR] Press key failed: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean executeGetText(Page page, ActionData action, String originalGherkinStep, int actionIndex) {
+        ElementLocators locators = action.getElement();
+        if (locators == null) return false;
+        
+        String key = ParameterExtractor.extractParameterAtIndex(originalGherkinStep, actionIndex);
+        if (key == null) key = action.getValue();
+        
+        if (key == null || key.isEmpty() || "___RUNTIME_PARAMETER___".equals(key)) {
+            logger.error("[ERROR] No variable name (value) provided for GET_TEXT action");
+            return false;
+        }
+
+        try {
+            Locator element = SmartLocatorFinder.findElement(page, locators);
+            if (element == null) return false;
+            
+            String text = element.innerText();
+            if (text == null || text.isEmpty()) {
+                text = (String) element.evaluate("el => el.value || el.placeholder || ''");
+            }
+            
+            com.framework.utils.RandomDataResolver.storeValue(key, text.trim());
+            return true;
+        } catch (Exception e) {
+            logger.error("[ERROR] Failed to capture text from element: {}", e.getMessage());
             return false;
         }
     }

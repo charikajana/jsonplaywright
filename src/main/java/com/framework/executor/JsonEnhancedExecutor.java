@@ -48,7 +48,6 @@ public class JsonEnhancedExecutor {
             gherkinStep, actions != null ? actions.size() : 0, page.url());
         
         if (actions != null) {
-            // Track TYPE/SELECT action counter separately for parameter extraction
             int typeSelectActionIndex = 0;
             
             for (int i = 0; i < actions.size(); i++) {
@@ -78,9 +77,10 @@ public class JsonEnhancedExecutor {
                     return false;
                 }
                 
-                // Increment counter only for TYPE, SELECT, SELECT_DROPDOWN and SELECT_DATE actions (they consume parameters)
+                // Increment counter only for actions that consume parameters
                 if ("TYPE".equals(action.getActionType()) || "SELECT".equals(action.getActionType()) || 
-                    "SELECT_DROPDOWN".equals(action.getActionType()) || "SELECT_DATE".equals(action.getActionType())) {
+                    "SELECT_DROPDOWN".equals(action.getActionType()) || "SELECT_DATE".equals(action.getActionType()) ||
+                    "GET_TEXT".equals(action.getActionType())) {
                     typeSelectActionIndex++;
                 }
             }
@@ -159,6 +159,9 @@ public class JsonEnhancedExecutor {
                     
                 case "DRAG_DROP":
                     return InteractionHandler.executeDragDrop(page, action);
+                    
+                case "GET_TEXT":
+                    return InteractionHandler.executeGetText(page, action, originalGherkinStep, typeSelectActionIndex);
                     
                 case "SCROLL":
                     return NavigationHandler.executeScroll(page, action);

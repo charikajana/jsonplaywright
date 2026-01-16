@@ -1,0 +1,45 @@
+{
+    "stepFileName": "user_verifies_username_field_contains_param_",
+    "gherkinStep": "User verifies Username field contains \"VAR_TEST_TITLE\"",
+    "normalizedStep": "user_verifies_username_field_contains_param_",
+    "stepType": "Then",
+    "actions": [
+        {
+            "actionNumber": 1,
+            "actionType": "VERIFY_TEXT",
+            "description": "Verify Username field has the captured title",
+            "element": {
+                "type": "input",
+                "id": "username",
+                "name": "username",
+                "selector": "#username",
+                "cssSelector": "input#username",
+                "xpath": "//*[@id=\"username\"]",
+                "text": null,
+                "placeholder": null,
+                "dataTest": null,
+                "ariaLabel": null,
+                "role": null,
+                "title": null,
+                "alt": null,
+                "className": "login_input",
+                "value": null,
+                "href": null,
+                "src": null,
+                "fingerprint": {
+                    "attributes": {
+                        "type": "text",
+                        "role": null
+                    },
+                    "context": {
+                        "nearbyText": null,
+                        "parentTag": "td",
+                        "heading": "Adactin.com - Hotel Reservation System"
+                    }
+                }
+            },
+            "value": "___RUNTIME_PARAMETER___",
+            "comparisonType": "CONTAINS"
+        }
+    ]
+}

@@ -18,6 +18,7 @@ public class ActionData {
     private String url;
     private String expectedText;
     private Integer expectedCount;
+    private String comparisonType; // EXACTLY or CONTAINS
     private String status;
 
     
@@ -86,6 +87,14 @@ public class ActionData {
         this.expectedCount = expectedCount;
     }
     
+    public String getComparisonType() {
+        return comparisonType;
+    }
+    
+    public void setComparisonType(String comparisonType) {
+        this.comparisonType = comparisonType;
+    }
+
     public String getStatus() {
         return status;
     }
