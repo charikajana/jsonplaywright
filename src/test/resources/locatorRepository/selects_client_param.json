@@ -35,10 +35,15 @@
         }
       },
       "value": "___RUNTIME_PARAMETER___"
+    },
+    {
+      "actionNumber": 2,
+      "actionType": "WAIT_STABLE",
+      "description": "Wait for page to stabilize after client selection"
     }
   ],
   "metadata": {
     "createdDate": "2026-01-16T10:00:00",
-    "totalActions": 1
+    "totalActions": 2
   }
 }
